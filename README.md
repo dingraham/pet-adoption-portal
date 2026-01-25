@@ -11,6 +11,7 @@ A full-stack web application designed for **automation testing workshops**. Prov
 ## Features
 
 **User Features:**
+
 - Pet gallery with search, filtering, and pagination
 - Pet detail pages with image galleries
 - Pet matcher quiz with scoring algorithm
@@ -18,19 +19,20 @@ A full-stack web application designed for **automation testing workshops**. Prov
 - User dashboard (favorites, applications, appointments)
 
 **Admin Features:**
+
 - Pet management (CRUD)
 - Application review and approval
 - Statistics dashboard
 
 ## Tech Stack
 
-| Frontend | Backend |
-|----------|---------|
-| Vue 3 (Composition API) | Node.js + Express |
-| Vue Router | JWT Authentication |
-| Pinia | bcrypt |
-| Tailwind CSS | JSON file storage |
-| Vite | CORS enabled |
+| Frontend                | Backend            |
+| ----------------------- | ------------------ |
+| Vue 3 (Composition API) | Node.js + Express  |
+| Vue Router              | JWT Authentication |
+| Pinia                   | bcrypt             |
+| Tailwind CSS            | JSON file storage  |
+| Vite                    | CORS enabled       |
 
 ## Quick Start
 
@@ -48,15 +50,16 @@ npm run dev
 ```
 
 **URLs:**
+
 - Frontend: http://localhost:5173
 - Backend: http://localhost:3000
 
 ## Default Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
+| Role  | Email                 | Password |
+| ----- | --------------------- | -------- |
 | Admin | admin@petadoption.com | admin123 |
-| User | user@petadoption.com | user123 |
+| User  | user@petadoption.com  | user123  |
 
 ## Running Tests
 
@@ -69,6 +72,7 @@ npm run test:report  # View HTML report
 ```
 
 **Documentation:**
+
 - [Playwright Guide](./PLAYWRIGHT-GUIDE.md) - Complete testing guide
 - [Cheat Sheet](./tests/CHEATSHEET.md) - Quick reference
 
