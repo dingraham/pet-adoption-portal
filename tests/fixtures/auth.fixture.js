@@ -7,18 +7,18 @@ import { test as base } from '@playwright/test';
  *
  * Usage:
  *   import { test } from './fixtures/auth.fixture.js';
- *   test('my test', async ({ authenticatedPage, adminPage }) => {
- *     // Use authenticatedPage for logged-in user tests
+ *   test('my test', async ({ userPage, adminPage }) => {
+ *     // Use userPage for logged-in user tests
  *     // Use adminPage for admin user tests
  *   });
  */
 
 export const test = base.extend({
   /**
-   * Fixture: authenticatedPage
+   * Fixture: userPage
    * Provides a page that's already logged in as a regular user
    */
-  authenticatedPage: async ({ page }, use) => {
+  userPage: async ({ page }, use) => {
     // Login as regular user
     await page.goto('/login');
     await page.getByTestId('login-email').fill('user@petadoption.com');

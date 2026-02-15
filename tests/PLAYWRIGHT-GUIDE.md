@@ -1,6 +1,6 @@
 # Playwright Testing Guide for Pet Adoption Portal
 
-## 🎯 Quick Start for Cypress Users
+## 🎯 Quick Start for Cypress Users (or New Playwright Users)
 
 Welcome! Since you're familiar with Cypress, this guide focuses on **what's different** in Playwright and how to get productive quickly.
 
@@ -75,7 +75,7 @@ pet-adoption-portal/
 
 ---
 
-## 🔑 Key Concepts for Cypress Users
+## 🔑 Key Concepts
 
 ### 1. **Async/Await** (Biggest Difference!)
 
@@ -165,9 +165,9 @@ it("test", () => {
 // tests/fixtures/auth.fixture.js (already created!)
 import { test } from "./fixtures/auth.fixture.js";
 
-test("can access dashboard", async ({ authenticatedPage }) => {
+test("can access dashboard", async ({ userPage }) => {
   // Already logged in! No setup needed
-  await authenticatedPage.goto("/dashboard");
+  await userPage.goto("/dashboard");
 });
 ```
 
@@ -224,7 +224,7 @@ Click on your test in the UI to run it and watch it execute!
 
 ---
 
-## 🛠️ Code Generation (Playwright's Superpower!)
+## 🛠️ Code Generation
 
 Playwright can **record your actions** and generate test code!
 
@@ -285,20 +285,20 @@ test("shows error for invalid email", async ({ page }) => {
 });
 ```
 
-### Pattern 3: Using Authenticated Fixture
+### Pattern 3: Using User Fixture
 
 ```javascript
 import { test } from "../fixtures/auth.fixture.js";
 
-test("favorite a pet", async ({ authenticatedPage }) => {
+test("favorite a pet", async ({ userPage }) => {
   // Already logged in!
-  await authenticatedPage.goto("/pets");
-  await authenticatedPage.getByTestId("pet-card-1").hover();
-  await authenticatedPage.getByTestId("toggle-favorite-button").first().click();
+  await userPage.goto("/pets");
+  await userPage.getByTestId("pet-card-1").hover();
+  await userPage.getByTestId("toggle-favorite-button").first().click();
 
   // Verify favorite was added
-  await authenticatedPage.goto("/dashboard");
-  await expect(authenticatedPage.getByText("Favorites")).toBeVisible();
+  await userPage.goto("/dashboard");
+  await expect(userPage.getByText("Favorites")).toBeVisible();
 });
 ```
 
@@ -421,7 +421,7 @@ test.beforeEach(async ({ page }) => {
 ```javascript
 // ✅ Good - use fixture
 import { test } from '../fixtures/auth.fixture.js';
-test('test', async ({ authenticatedPage }) => { ... });
+test('test', async ({ userPage }) => { ... });
 
 // ❌ Bad - manual login in every test
 test('test', async ({ page }) => {

@@ -250,10 +250,10 @@ import { test as authTest } from '../fixtures/auth.fixture.js';
 
 authTest.describe('Tests with authenticated user', () => {
 
-  authTest('can access dashboard when logged in', async ({ authenticatedPage }) => {
-    // authenticatedPage is already logged in as a regular user
-    await authenticatedPage.goto('/dashboard');
-    await expect(authenticatedPage).toHaveURL(/dashboard/);
+  authTest('can access dashboard when logged in', async ({ userPage }) => {
+    // userPage is already logged in as a regular user
+    await userPage.goto('/dashboard');
+    await expect(userPage).toHaveURL(/dashboard/);
   });
 
   authTest('admin can access admin panel', async ({ adminPage }) => {

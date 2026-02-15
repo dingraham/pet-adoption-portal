@@ -259,9 +259,9 @@ console.log(await page.title())
 import { test, expect } from '../fixtures/auth.fixture.js'
 
 // Use authenticated page
-test('test with logged in user', async ({ authenticatedPage }) => {
-  await authenticatedPage.goto('/dashboard')
-  await expect(authenticatedPage).toHaveURL(/dashboard/)
+test('test with logged in user', async ({ userPage }) => {
+  await userPage.goto('/dashboard')
+  await expect(userPage).toHaveURL(/dashboard/)
 })
 
 // Use admin page
@@ -423,7 +423,7 @@ test('test 1', async ({ page }) => {
 
 // ✅ Using fixtures
 import { test } from '../fixtures/auth.fixture.js'
-test('test 1', async ({ authenticatedPage }) => {
+test('test 1', async ({ userPage }) => {
   // Already logged in!
 })
 ```
