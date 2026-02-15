@@ -63,8 +63,13 @@ const router = createRouter({
   }
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
+
+  // If we have a token but user data hasn't loaded yet, fetch it first
+  if (authStore.isAuthenticated && !authStore.user) {
+    await authStore.loadUser();
+  }
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } });
