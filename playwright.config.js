@@ -31,19 +31,22 @@ export default defineConfig({
   // 'list' shows test results in the terminal as they run
   reporter: [["list"], ["html", { outputFolder: "playwright-report" }]],
 
+  // Output directory for test artifacts (screenshots, videos, traces)
+  outputDir: "test-results",
+
   // Shared settings for all projects
   use: {
     // Base URL for tests - all page.goto('/path') will use this
     baseURL: "http://localhost:5173",
 
-    // Collect trace when retrying the failed test
-    trace: "on-first-retry",
+    // Collect trace - always on in CI for artifact debugging
+    trace: process.env.CI ? "on" : "on-first-retry",
 
-    // Screenshot on failure
-    screenshot: "only-on-failure",
+    // Screenshot - always capture in CI for artifact debugging
+    screenshot: process.env.CI ? "on" : "only-on-failure",
 
-    // Video on failure
-    video: "retain-on-failure",
+    // Video - always record in CI for artifact debugging
+    video: process.env.CI ? "on" : "retain-on-failure",
 
     // Maximum time for actions like click, fill, etc.
     actionTimeout: 10000,

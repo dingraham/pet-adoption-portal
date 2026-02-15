@@ -231,7 +231,7 @@ test.describe('Example Test Suite', () => {
     // Use test.skip() to skip a test
   });
 
-  test.only('only this test will run if uncommented', async ({ page }) => {
+  test.skip('only this test will run (use test.only to enable)', async ({ page }) => {
     // Use test.only() to run only this test
     // NOTE: Remove .only before committing!
   });
