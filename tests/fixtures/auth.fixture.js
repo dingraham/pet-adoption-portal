@@ -3,8 +3,7 @@ import { test as base } from '@playwright/test';
 /**
  * Custom Fixtures for Authentication
  *
- * Fixtures in Playwright are like Cypress custom commands, but more powerful.
- * They allow you to set up and tear down test state automatically.
+ * Fixtures allow you to set up and tear down test state automatically.
  *
  * Usage:
  *   import { test } from './fixtures/auth.fixture.js';

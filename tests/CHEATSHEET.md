@@ -145,7 +145,7 @@ await page.reload()
 await page.waitForURL('/dashboard')
 await page.waitForURL(/pets/)
 
-// Wait for selector (rarely needed - auto-wait is better)
+// Wait for selector (rarely needed due to auto-wait)
 await page.waitForSelector('[data-testid="pet-card-1"]')
 
 // Wait for load state

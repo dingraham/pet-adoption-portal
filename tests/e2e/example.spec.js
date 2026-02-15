@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * EXAMPLE TEST FILE - Playwright Basics for Cypress Users
+ * EXAMPLE TEST FILE - Playwright Basics
  *
- * This file demonstrates common Playwright patterns and how they compare to Cypress.
- * Read through the comments to understand the key differences and similarities.
+ * This file demonstrates common Playwright patterns.
+ * Read through the comments to understand how each feature works.
  *
  * DO NOT RUN THIS FILE YET - It's for learning purposes only!
  */
@@ -14,36 +14,29 @@ import { test, expect } from '@playwright/test';
 // ============================================================================
 
 /**
- * Test suites in Playwright use test.describe() - similar to Cypress's describe()
- * Tests use test() - similar to Cypress's it()
+ * Test suites use test.describe()
+ * Tests use test()
  */
 test.describe('Example Test Suite', () => {
 
   /**
-   * HOOKS - Just like Cypress
-   * beforeEach, afterEach, beforeAll, afterAll all work the same way
+   * HOOKS
+   * beforeEach, afterEach, beforeAll, afterAll
    */
   test.beforeEach(async ({ page }) => {
-    // The 'page' object is Playwright's equivalent to Cypress's cy
-    // It's automatically injected as a fixture
+    // The 'page' object is automatically injected as a fixture
     await page.goto('/');
   });
 
   /**
    * BASIC TEST
-   * Notice: Playwright tests are async functions
-   * Cypress: it('test name', () => { ... })
-   * Playwright: test('test name', async ({ page }) => { ... })
+   * Playwright tests are async functions
    */
   test('demonstrates basic navigation', async ({ page }) => {
     // Navigate to a page
-    // Cypress: cy.visit('/login')
-    // Playwright: await page.goto('/login')
     await page.goto('/login');
 
-    // Assertions - very similar to Cypress
-    // Cypress: cy.url().should('include', '/login')
-    // Playwright: await expect(page).toHaveURL(/login/)
+    // Check URL
     await expect(page).toHaveURL(/login/);
 
     // Check page title
@@ -51,62 +44,49 @@ test.describe('Example Test Suite', () => {
   });
 
   // ============================================================================
-  // LOCATORS - Key Difference from Cypress!
+  // LOCATORS - Finding Elements
   // ============================================================================
 
-  test('demonstrates locators (Playwright\'s approach to finding elements)', async ({ page }) => {
+  test('demonstrates locators', async ({ page }) => {
     await page.goto('/login');
 
     /**
      * LOCATOR STRATEGIES
      *
-     * Cypress uses commands like cy.get(), cy.contains(), etc.
-     * Playwright uses LOCATORS which are references to elements that can be reused
-     *
-     * Locators are lazy - they don't find the element until you interact with it
-     * This means they're more resilient to page changes
+     * Locators are references to elements that can be reused.
+     * They are lazy - they don't find the element until you interact with it.
      */
 
-    // 1. By test ID (recommended!)
-    // Cypress: cy.get('[data-testid="login-email"]')
-    // Playwright: page.getByTestId('login-email')
+    // 1. By test ID (recommended)
     const emailInput = page.getByTestId('login-email');
 
     // 2. By role (accessibility-friendly)
-    // Great for buttons, links, inputs, etc.
     const submitButton = page.getByRole('button', { name: 'Login' });
 
     // 3. By text
-    // Cypress: cy.contains('Don't have an account?')
-    // Playwright: page.getByText('Don't have an account?')
     const registerLink = page.getByText('Don\'t have an account?');
 
     // 4. By label (for form inputs)
-    // Finds input associated with a label
     const passwordInput = page.getByLabel('Password');
 
     // 5. By placeholder
     const searchByPlaceholder = page.getByPlaceholder('you@example.com');
 
-    // NOTE: You can also use CSS selectors (but test IDs are better!)
+    // 6. CSS selector
     // const element = page.locator('.some-class');
   });
 
   // ============================================================================
-  // INTERACTIONS - Similar to Cypress but with await
+  // INTERACTIONS
   // ============================================================================
 
   test('demonstrates interactions', async ({ page }) => {
     await page.goto('/login');
 
     // Fill input
-    // Cypress: cy.get('[data-testid="login-email"]').type('user@example.com')
-    // Playwright: await page.getByTestId('login-email').fill('user@example.com')
     await page.getByTestId('login-email').fill('user@example.com');
 
     // Click button
-    // Cypress: cy.get('[data-testid="login-submit"]').click()
-    // Playwright: await page.getByTestId('login-submit').click()
     await page.getByTestId('login-submit').click();
 
     // Check checkbox
@@ -120,25 +100,19 @@ test.describe('Example Test Suite', () => {
   });
 
   // ============================================================================
-  // ASSERTIONS - More explicit in Playwright
+  // ASSERTIONS
   // ============================================================================
 
   test('demonstrates assertions', async ({ page }) => {
     await page.goto('/login');
 
     // Visible/Hidden
-    // Cypress: cy.get('[data-testid="login-form"]').should('be.visible')
-    // Playwright: await expect(page.getByTestId('login-form')).toBeVisible()
     await expect(page.getByTestId('login-form')).toBeVisible();
 
     // Text content
-    // Cypress: cy.get('h2').should('contain', 'Login')
-    // Playwright: await expect(page.locator('h2')).toContainText('Login')
     await expect(page.locator('h2')).toContainText('Login');
 
     // Count elements
-    // Cypress: cy.get('.pet-card').should('have.length', 5)
-    // Playwright: await expect(page.locator('.pet-card')).toHaveCount(5)
     // await expect(page.locator('.pet-card')).toHaveCount(5);
 
     // Attribute value
@@ -149,29 +123,27 @@ test.describe('Example Test Suite', () => {
   });
 
   // ============================================================================
-  // WAITING - Auto-waiting is a BIG advantage in Playwright!
+  // WAITING
   // ============================================================================
 
-  test('demonstrates waiting (Playwright auto-waits!)', async ({ page }) => {
+  test('demonstrates waiting', async ({ page }) => {
     await page.goto('/pets');
 
     /**
-     * PLAYWRIGHT AUTO-WAITS!
-     * Unlike Cypress which sometimes needs cy.wait(), Playwright automatically waits for:
+     * PLAYWRIGHT AUTO-WAITS
+     * Playwright automatically waits for:
      * - Element to be visible
      * - Element to be enabled
      * - Element to be stable (not animating)
-     *
-     * This means most of the time you DON'T need explicit waits!
      */
 
-    // This will automatically wait for the button to be clickable
+    // This will automatically wait for the input to be ready
     await page.getByTestId('search-input').fill('Luna');
 
     // Wait for specific URL
     // await page.waitForURL('/dashboard');
 
-    // Wait for API response (like cy.intercept())
+    // Wait for API response
     // const responsePromise = page.waitForResponse(
     //   response => response.url().includes('/api/pets') && response.status() === 200
     // );
@@ -186,16 +158,10 @@ test.describe('Example Test Suite', () => {
   });
 
   // ============================================================================
-  // NETWORK INTERCEPTION - Different from Cypress!
+  // NETWORK INTERCEPTION
   // ============================================================================
 
   test('demonstrates network interception', async ({ page }) => {
-    /**
-     * ROUTE INTERCEPTION
-     * Cypress: cy.intercept()
-     * Playwright: page.route()
-     */
-
     // Intercept API call and modify response
     await page.route('**/api/pets*', async (route) => {
       const response = await route.fetch();
@@ -214,7 +180,7 @@ test.describe('Example Test Suite', () => {
   });
 
   // ============================================================================
-  // MULTIPLE ELEMENTS - forEach equivalent
+  // MULTIPLE ELEMENTS
   // ============================================================================
 
   test('demonstrates working with multiple elements', async ({ page }) => {
@@ -227,9 +193,7 @@ test.describe('Example Test Suite', () => {
     const count = await petCards.count();
     expect(count).toBeGreaterThan(0);
 
-    // Iterate through them
-    // Cypress: cy.get('.pet-card').each(($el) => { ... })
-    // Playwright: Use .nth() or .all()
+    // Iterate through them using .nth() or .all()
     for (let i = 0; i < await petCards.count(); i++) {
       const card = petCards.nth(i);
       await expect(card).toBeVisible();
@@ -260,17 +224,15 @@ test.describe('Example Test Suite', () => {
   });
 
   // ============================================================================
-  // SKIP / ONLY - Same as Cypress!
+  // SKIP / ONLY
   // ============================================================================
 
   test.skip('this test will be skipped', async ({ page }) => {
-    // Cypress: it.skip()
-    // Playwright: test.skip()
+    // Use test.skip() to skip a test
   });
 
   test.only('only this test will run if uncommented', async ({ page }) => {
-    // Cypress: it.only()
-    // Playwright: test.only()
+    // Use test.only() to run only this test
     // NOTE: Remove .only before committing!
   });
 
@@ -281,22 +243,21 @@ test.describe('Example Test Suite', () => {
 // ============================================================================
 
 /**
- * Fixtures are like custom Cypress commands but more powerful
- * They're defined in tests/fixtures/auth.fixture.js
+ * Fixtures are defined in tests/fixtures/auth.fixture.js
+ * They provide reusable test setup like pre-authenticated pages
  */
 import { test as authTest } from '../fixtures/auth.fixture.js';
 
 authTest.describe('Tests with authenticated user', () => {
 
   authTest('can access dashboard when logged in', async ({ authenticatedPage }) => {
-    // authenticatedPage is already logged in as a regular user!
-    // No need to go through login flow
+    // authenticatedPage is already logged in as a regular user
     await authenticatedPage.goto('/dashboard');
     await expect(authenticatedPage).toHaveURL(/dashboard/);
   });
 
   authTest('admin can access admin panel', async ({ adminPage }) => {
-    // adminPage is already logged in as admin!
+    // adminPage is already logged in as admin
     await adminPage.goto('/admin');
     await expect(adminPage).toHaveURL(/admin/);
   });
@@ -304,16 +265,13 @@ authTest.describe('Tests with authenticated user', () => {
 });
 
 /**
- * KEY TAKEAWAYS FOR CYPRESS USERS:
+ * KEY CONCEPTS:
  *
- * 1. Tests are async/await - remember to use 'await'!
+ * 1. Tests are async/await - remember to use 'await'
  * 2. Locators are lazy and reusable
- * 3. Use getByTestId(), getByRole(), getByText() instead of .get()
- * 4. Auto-waiting is built-in - no need for most cy.wait()
- * 5. Fixtures replace custom commands
- * 6. Multiple browsers out of the box
- * 7. Better parallelization
- * 8. Faster execution
- * 9. Better debugging tools (Playwright Inspector)
- * 10. Can test outside the browser (API testing)
+ * 3. Use getByTestId(), getByRole(), getByText() to find elements
+ * 4. Auto-waiting is built-in for most actions
+ * 5. Fixtures provide reusable test setup
+ * 6. Use page.route() for network interception
+ * 7. Use page.pause() for debugging
  */

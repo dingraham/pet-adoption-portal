@@ -25,6 +25,7 @@ const filters = ref({
 
 const currentPage = ref(1);
 const totalPages = ref(1);
+const totalCount = ref(0);
 
 const fetchPets = async () => {
   loading.value = true;
@@ -35,6 +36,7 @@ const fetchPets = async () => {
     });
     pets.value = response.data.pets;
     totalPages.value = response.data.totalPages;
+    totalCount.value = response.data.totalCount;
   } catch (err) {
     error.value = 'Failed to load pets';
   } finally {
@@ -224,7 +226,7 @@ onMounted(() => {
       <!-- Results Count -->
       <div data-testid="results-count" class="mb-6">
         <p class="text-gray-700 text-lg font-medium">
-          <span data-testid="pet-count" class="font-bold text-gray-900">{{ pets.length }}</span> pets available for adoption
+          <span data-testid="pet-count" class="font-bold text-gray-900">{{ totalCount }}</span> pets available for adoption
         </p>
       </div>
 

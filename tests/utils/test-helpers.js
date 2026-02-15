@@ -64,7 +64,6 @@ export function generateApplicationData(overrides = {}) {
 
 /**
  * Wait for API response
- * Similar to cy.intercept() in Cypress
  */
 export async function waitForAPIResponse(page, urlPattern, callback) {
   const responsePromise = page.waitForResponse(

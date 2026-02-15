@@ -356,5 +356,366 @@
     ],
     "status": "available",
     "dateAdded": "2024-01-28T00:00:00.000Z"
+  },
+  {
+    "id": "11",
+    "name": "Mochi",
+    "species": "cat",
+    "breed": "Scottish Fold",
+    "age": 3,
+    "ageCategory": "adult",
+    "gender": "female",
+    "size": "small",
+    "weight": 8,
+    "color": "White",
+    "description": "Mochi is a sweet and curious cat with adorable folded ears. She loves to perch on high places and watch the world go by. Very affectionate once she warms up to you.",
+    "personality": [
+      "Curious",
+      "Affectionate",
+      "Quiet",
+      "Independent"
+    ],
+    "medicalHistory": "Vaccinated, spayed, microchipped",
+    "specialNeeds": false,
+    "goodWith": [
+      "kids"
+    ],
+    "goodForFirstTime": true,
+    "activityLevel": "moderate",
+    "needsYard": false,
+    "needsExperienced": false,
+    "timeRequirement": "low",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800",
+      "https://images.unsplash.com/photo-1494256997604-768d1f608cac?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-15T00:00:00.000Z"
+  },
+  {
+    "id": "12",
+    "name": "Duke",
+    "species": "dog",
+    "breed": "Rottweiler",
+    "age": 4,
+    "ageCategory": "adult",
+    "gender": "male",
+    "size": "large",
+    "weight": 95,
+    "color": "Black and Mahogany",
+    "description": "Duke is a well-trained and confident dog who needs an experienced handler. He is incredibly loyal to his family but requires proper introductions to new people.",
+    "personality": [
+      "Confident",
+      "Loyal",
+      "Protective",
+      "Intelligent"
+    ],
+    "medicalHistory": "Vaccinated, neutered, hip dysplasia managed",
+    "specialNeeds": true,
+    "goodWith": [],
+    "goodForFirstTime": false,
+    "activityLevel": "moderate",
+    "needsYard": true,
+    "needsExperienced": true,
+    "timeRequirement": "high",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1567752881298-894bb81f9379?w=800",
+      "https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-14T00:00:00.000Z"
+  },
+  {
+    "id": "13",
+    "name": "Cleo",
+    "species": "cat",
+    "breed": "Abyssinian",
+    "age": 2,
+    "ageCategory": "young",
+    "gender": "female",
+    "size": "medium",
+    "weight": 9,
+    "color": "Ruddy",
+    "description": "Cleo is an athletic and adventurous cat who loves to climb and explore. She needs lots of vertical space and interactive toys to keep her entertained.",
+    "personality": [
+      "Athletic",
+      "Adventurous",
+      "Intelligent",
+      "Energetic"
+    ],
+    "medicalHistory": "Vaccinated, spayed, healthy",
+    "specialNeeds": false,
+    "goodWith": [
+      "pets"
+    ],
+    "goodForFirstTime": false,
+    "activityLevel": "high",
+    "needsYard": false,
+    "needsExperienced": true,
+    "timeRequirement": "moderate",
+    "location": "Foster Home",
+    "images": [
+      "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=800",
+      "https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-13T00:00:00.000Z"
+  },
+  {
+    "id": "14",
+    "name": "Biscuit",
+    "species": "dog",
+    "breed": "Corgi",
+    "age": 2,
+    "ageCategory": "young",
+    "gender": "male",
+    "size": "small",
+    "weight": 28,
+    "color": "Red and White",
+    "description": "Biscuit is a charming and playful Corgi with endless energy. He loves herding games and is incredibly food motivated, making training a breeze.",
+    "personality": [
+      "Playful",
+      "Smart",
+      "Stubborn",
+      "Affectionate"
+    ],
+    "medicalHistory": "Vaccinated, neutered, healthy",
+    "specialNeeds": false,
+    "goodWith": [
+      "kids",
+      "pets"
+    ],
+    "goodForFirstTime": true,
+    "activityLevel": "high",
+    "needsYard": false,
+    "needsExperienced": false,
+    "timeRequirement": "moderate",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=800",
+      "https://images.unsplash.com/photo-1546975490-e8b92a360b24?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-11T00:00:00.000Z"
+  },
+  {
+    "id": "15",
+    "name": "Midnight",
+    "species": "cat",
+    "breed": "Bombay",
+    "age": 8,
+    "ageCategory": "senior",
+    "gender": "male",
+    "size": "medium",
+    "weight": 11,
+    "color": "Black",
+    "description": "Midnight is a sleek senior cat who loves nothing more than a warm lap and gentle pets. He is very mellow and would be perfect for a quiet household.",
+    "personality": [
+      "Mellow",
+      "Loving",
+      "Calm",
+      "Gentle"
+    ],
+    "medicalHistory": "Vaccinated, neutered, dental cleaning needed",
+    "specialNeeds": true,
+    "goodWith": [
+      "kids"
+    ],
+    "goodForFirstTime": true,
+    "activityLevel": "low",
+    "needsYard": false,
+    "needsExperienced": false,
+    "timeRequirement": "low",
+    "location": "Foster Home",
+    "images": [
+      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800",
+      "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-09T00:00:00.000Z"
+  },
+  {
+    "id": "16",
+    "name": "Ziggy",
+    "species": "dog",
+    "breed": "Dachshund",
+    "age": 5,
+    "ageCategory": "adult",
+    "gender": "female",
+    "size": "small",
+    "weight": 15,
+    "color": "Chocolate",
+    "description": "Ziggy is a sassy and spirited Dachshund who thinks she is much bigger than she is. She loves to burrow under blankets and will alert you to any visitors.",
+    "personality": [
+      "Sassy",
+      "Bold",
+      "Loyal",
+      "Alert"
+    ],
+    "medicalHistory": "Vaccinated, spayed, back issues managed with weight control",
+    "specialNeeds": true,
+    "goodWith": [],
+    "goodForFirstTime": false,
+    "activityLevel": "moderate",
+    "needsYard": false,
+    "needsExperienced": true,
+    "timeRequirement": "moderate",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=800",
+      "https://images.unsplash.com/photo-1612195583950-b8fd34c87093?w=800"
+    ],
+    "status": "pending",
+    "dateAdded": "2024-01-22T00:00:00.000Z"
+  },
+  {
+    "id": "17",
+    "name": "Jasper",
+    "species": "cat",
+    "breed": "British Shorthair",
+    "age": 1,
+    "ageCategory": "kitten",
+    "gender": "male",
+    "size": "medium",
+    "weight": 6,
+    "color": "Blue",
+    "description": "Jasper is a chunky and adorable kitten with a plush coat. He is playful but also loves his nap time. Gets along great with other cats.",
+    "personality": [
+      "Playful",
+      "Easygoing",
+      "Cuddly",
+      "Social"
+    ],
+    "medicalHistory": "Vaccinations current, neutered, microchipped",
+    "specialNeeds": false,
+    "goodWith": [
+      "kids",
+      "pets"
+    ],
+    "goodForFirstTime": true,
+    "activityLevel": "moderate",
+    "needsYard": false,
+    "needsExperienced": false,
+    "timeRequirement": "moderate",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=800",
+      "https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-16T00:00:00.000Z"
+  },
+  {
+    "id": "18",
+    "name": "Scout",
+    "species": "dog",
+    "breed": "Australian Shepherd",
+    "age": 1,
+    "ageCategory": "puppy",
+    "gender": "male",
+    "size": "medium",
+    "weight": 45,
+    "color": "Blue Merle",
+    "description": "Scout is a stunning Aussie puppy with boundless energy and intelligence. He needs a very active family who can provide mental stimulation and physical exercise daily.",
+    "personality": [
+      "Energetic",
+      "Intelligent",
+      "Eager",
+      "Athletic"
+    ],
+    "medicalHistory": "Vaccinations in progress, neutered, healthy",
+    "specialNeeds": false,
+    "goodWith": [
+      "kids",
+      "pets"
+    ],
+    "goodForFirstTime": false,
+    "activityLevel": "high",
+    "needsYard": true,
+    "needsExperienced": true,
+    "timeRequirement": "high",
+    "location": "Foster Home",
+    "images": [
+      "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800",
+      "https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-17T00:00:00.000Z"
+  },
+  {
+    "id": "19",
+    "name": "Nala",
+    "species": "cat",
+    "breed": "Ragdoll",
+    "age": 4,
+    "ageCategory": "adult",
+    "gender": "female",
+    "size": "large",
+    "weight": 14,
+    "color": "Seal Bicolor",
+    "description": "Nala is a gorgeous Ragdoll who goes limp when you pick her up. She is extremely affectionate and follows her humans from room to room like a puppy.",
+    "personality": [
+      "Affectionate",
+      "Docile",
+      "Sweet",
+      "Loyal"
+    ],
+    "medicalHistory": "Vaccinated, spayed, requires regular grooming",
+    "specialNeeds": false,
+    "goodWith": [
+      "kids",
+      "pets"
+    ],
+    "goodForFirstTime": true,
+    "activityLevel": "low",
+    "needsYard": false,
+    "needsExperienced": false,
+    "timeRequirement": "moderate",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6?w=800",
+      "https://images.unsplash.com/photo-1511044568932-338cba0ad803?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-06T00:00:00.000Z"
+  },
+  {
+    "id": "20",
+    "name": "Rusty",
+    "species": "dog",
+    "breed": "Irish Setter",
+    "age": 6,
+    "ageCategory": "adult",
+    "gender": "male",
+    "size": "large",
+    "weight": 68,
+    "color": "Mahogany Red",
+    "description": "Rusty is a beautiful Irish Setter with a flowing red coat. He is friendly, outgoing, and loves to run. Would thrive in a home with an active lifestyle.",
+    "personality": [
+      "Friendly",
+      "Outgoing",
+      "Active",
+      "Happy"
+    ],
+    "medicalHistory": "Vaccinated, neutered, healthy",
+    "specialNeeds": false,
+    "goodWith": [
+      "kids",
+      "pets"
+    ],
+    "goodForFirstTime": true,
+    "activityLevel": "high",
+    "needsYard": true,
+    "needsExperienced": false,
+    "timeRequirement": "high",
+    "location": "Main Shelter",
+    "images": [
+      "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=800",
+      "https://images.unsplash.com/photo-1558788353-f76d92427f16?w=800"
+    ],
+    "status": "available",
+    "dateAdded": "2024-02-03T00:00:00.000Z"
   }
 ]

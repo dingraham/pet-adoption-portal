@@ -186,7 +186,7 @@ onMounted(fetchPet);
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
-              First Name *
+              First Name <span class="text-red-500">*</span>
             </label>
             <input
               v-model="application.firstName"
@@ -197,7 +197,7 @@ onMounted(fetchPet);
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
-              Last Name *
+              Last Name <span class="text-red-500">*</span>
             </label>
             <input
               v-model="application.lastName"
@@ -210,7 +210,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Email *
+            Email <span class="text-red-500">*</span>
           </label>
           <input
             v-model="application.email"
@@ -222,7 +222,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Phone *
+            Phone <span class="text-red-500">*</span>
           </label>
           <input
             v-model="application.phone"
@@ -234,7 +234,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Address *
+            Address <span class="text-red-500">*</span>
           </label>
           <input
             v-model="application.address"
@@ -246,7 +246,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Date of Birth * (Must be 18+)
+            Date of Birth <span class="text-red-500">*</span> (Must be 18+)
           </label>
           <input
             v-model="application.dateOfBirth"
@@ -263,7 +263,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Housing Type *
+            Housing Type <span class="text-red-500">*</span>
           </label>
           <select
             v-model="application.housingType"
@@ -278,7 +278,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Do you own or rent? *
+            Do you own or rent? <span class="text-red-500">*</span>
           </label>
           <select
             v-model="application.ownOrRent"
@@ -298,13 +298,13 @@ onMounted(fetchPet);
             class="mr-2"
           />
           <label for="landlordApproval" class="text-sm text-gray-700">
-            I have landlord approval to have pets *
+            I have landlord approval to have pets <span class="text-red-500">*</span>
           </label>
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Do you have a yard? *
+            Do you have a yard? <span class="text-red-500">*</span>
           </label>
           <select
             v-model="application.hasYard"
@@ -319,7 +319,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Number of household members *
+            Number of household members <span class="text-red-500">*</span>
           </label>
           <input
             v-model.number="application.householdMembers"
@@ -388,7 +388,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Previous Pet Experience * (What happened to previous pets?)
+            Previous Pet Experience <span class="text-red-500">*</span> (What happened to previous pets?)
           </label>
           <textarea
             v-model="application.previousPets"
@@ -428,7 +428,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Why do you want to adopt {{ pet?.name }}? *
+            Why do you want to adopt {{ pet?.name }}? <span class="text-red-500">*</span>
           </label>
           <textarea
             v-model="application.whyThisPet"
@@ -439,7 +439,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Activity Level You Can Provide *
+            Activity Level You Can Provide <span class="text-red-500">*</span>
           </label>
           <select
             v-model="application.activityLevel"
@@ -454,7 +454,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Hours pet would be alone daily *
+            Hours pet would be alone daily <span class="text-red-500">*</span>
           </label>
           <input
             v-model="application.hoursAlone"
@@ -472,7 +472,7 @@ onMounted(fetchPet);
             class="mr-2"
           />
           <label for="financiallyPrepared" class="text-sm text-gray-700">
-            I am financially prepared for veterinary care, food, and other pet expenses *
+            I am financially prepared for veterinary care, food, and other pet expenses <span class="text-red-500">*</span>
           </label>
         </div>
       </div>
@@ -510,7 +510,7 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Digital Signature * (Type your full name)
+            Digital Signature <span class="text-red-500">*</span> (Type your full name)
           </label>
           <input
             v-model="application.signature"
@@ -530,7 +530,7 @@ onMounted(fetchPet);
           <label for="terms" class="text-sm text-gray-700">
             I agree that all information provided is accurate and I understand that
             false information may result in denial of adoption. I agree to the shelter's
-            terms and conditions. *
+            terms and conditions. <span class="text-red-500">*</span>
           </label>
         </div>
       </div>

@@ -6,7 +6,6 @@ A full-stack web application designed for **automation testing workshops**. Prov
 
 - Teach students how to write effective automation tests
 - Practice platform for E2E testing with Playwright
-- Complex enough for challenging scenarios, simple enough to understand quickly
 
 ## Features
 
