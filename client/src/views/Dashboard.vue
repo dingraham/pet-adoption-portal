@@ -157,6 +157,7 @@ onMounted(async () => {
         <div
           v-for="pet in favoritePets"
           :key="pet.id"
+          :data-testid="`favorite-pet-${pet.id}`"
           class="bg-white rounded-lg shadow-lg overflow-hidden"
         >
           <img
