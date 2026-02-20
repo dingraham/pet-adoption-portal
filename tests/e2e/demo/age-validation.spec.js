@@ -1,7 +1,6 @@
 import { test, expect } from '../../fixtures/auth.fixture.js';
 
 test.describe('Adoption Application - Age Verification', () => {
-
   test('should prevent users under 18 from proceeding with application', async ({ userPage }) => {
     // Navigate to the pets page and select the first available pet
     await userPage.goto('/pets');
@@ -17,8 +16,8 @@ test.describe('Adoption Application - Age Verification', () => {
 
     // Fill in Step 1: Personal Information
     const inputs = userPage.locator('input[type="text"]');
-    await inputs.nth(0).fill('Jane');       // First Name
-    await inputs.nth(1).fill('Smith');      // Last Name
+    await inputs.nth(0).fill('Jane'); // First Name
+    await inputs.nth(1).fill('Smith'); // Last Name
     await userPage.locator('input[type="email"]').fill('jane.smith@example.com');
     await userPage.locator('input[type="tel"]').fill('555-0123');
     await inputs.nth(2).fill('123 Main St, Springfield, IL'); // Address
@@ -38,5 +37,4 @@ test.describe('Adoption Application - Age Verification', () => {
     // Should still be on Step 1 (not allowed to proceed)
     await expect(userPage.getByText('Step 1 of 5')).toBeVisible();
   });
-
 });
