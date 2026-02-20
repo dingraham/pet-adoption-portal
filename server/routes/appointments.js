@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/my-appointments', authenticateToken, async (req, res) => {
   try {
     const appointments = await readDB('appointments.json');
-    const userAppointments = appointments.filter(app => app.userId === req.user.id);
+    const userAppointments = appointments.filter((app) => app.userId === req.user.id);
 
     res.json(userAppointments);
   } catch (error) {
@@ -29,7 +29,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
     // Check if time slot is available
     const existingAppointment = appointments.find(
-      app => app.date === date && app.time === time && app.status !== 'cancelled'
+      (app) => app.date === date && app.time === time && app.status !== 'cancelled'
     );
 
     if (existingAppointment) {
@@ -44,7 +44,7 @@ router.post('/', authenticateToken, async (req, res) => {
       time,
       notes: notes || '',
       status: 'scheduled',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     appointments.push(newAppointment);
@@ -61,7 +61,7 @@ router.post('/', authenticateToken, async (req, res) => {
 router.patch('/:id/cancel', authenticateToken, async (req, res) => {
   try {
     const appointments = await readDB('appointments.json');
-    const index = appointments.findIndex(app => app.id === req.params.id);
+    const index = appointments.findIndex((app) => app.id === req.params.id);
 
     if (index === -1) {
       return res.status(404).json({ error: 'Appointment not found' });
@@ -95,16 +95,23 @@ router.get('/available-slots', async (req, res) => {
 
     // Define available time slots
     const allSlots = [
-      '09:00', '10:00', '11:00', '12:00',
-      '13:00', '14:00', '15:00', '16:00', '17:00'
+      '09:00',
+      '10:00',
+      '11:00',
+      '12:00',
+      '13:00',
+      '14:00',
+      '15:00',
+      '16:00',
+      '17:00',
     ];
 
     // Filter out booked slots
     const bookedSlots = appointments
-      .filter(app => app.date === date && app.status === 'scheduled')
-      .map(app => app.time);
+      .filter((app) => app.date === date && app.status === 'scheduled')
+      .map((app) => app.time);
 
-    const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
+    const availableSlots = allSlots.filter((slot) => !bookedSlots.includes(slot));
 
     res.json({ date, availableSlots });
   } catch (error) {

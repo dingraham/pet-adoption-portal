@@ -14,7 +14,7 @@ export async function seedDatabase() {
       lastName: 'User',
       phone: '555-0100',
       role: 'admin',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     },
     {
       id: '2',
@@ -24,8 +24,8 @@ export async function seedDatabase() {
       lastName: 'User',
       phone: '555-0200',
       role: 'user',
-      createdAt: new Date().toISOString()
-    }
+      createdAt: new Date().toISOString(),
+    },
   ];
 
   // Sample pets
@@ -41,7 +41,8 @@ export async function seedDatabase() {
       size: 'large',
       weight: 65,
       color: 'Yellow',
-      description: 'Luna is a sweet and energetic Labrador who loves to play fetch and go for long walks. She is great with kids and other dogs, making her the perfect family companion.',
+      description:
+        'Luna is a sweet and energetic Labrador who loves to play fetch and go for long walks. She is great with kids and other dogs, making her the perfect family companion.',
       personality: ['Friendly', 'Energetic', 'Loyal', 'Playful'],
       medicalHistory: 'Vaccinations up to date, spayed',
       specialNeeds: false,
@@ -55,10 +56,10 @@ export async function seedDatabase() {
       images: [
         'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800',
         'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
-        'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800'
+        'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-01-15').toISOString()
+      dateAdded: new Date('2024-01-15').toISOString(),
     },
     {
       id: '2',
@@ -71,7 +72,8 @@ export async function seedDatabase() {
       size: 'small',
       weight: 10,
       color: 'Orange Tabby',
-      description: 'Whiskers is a calm and affectionate cat who enjoys lounging in sunny spots and getting head scratches. He would do best as the only pet in a quiet home.',
+      description:
+        'Whiskers is a calm and affectionate cat who enjoys lounging in sunny spots and getting head scratches. He would do best as the only pet in a quiet home.',
       personality: ['Calm', 'Affectionate', 'Independent', 'Gentle'],
       medicalHistory: 'Vaccinations current, neutered, microchipped',
       specialNeeds: false,
@@ -84,10 +86,10 @@ export async function seedDatabase() {
       location: 'Main Shelter',
       images: [
         'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800',
-        'https://images.unsplash.com/photo-1573865526739-10c1d3a1f0cc?w=800'
+        'https://images.unsplash.com/photo-1573865526739-10c1d3a1f0cc?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-02-01').toISOString()
+      dateAdded: new Date('2024-02-01').toISOString(),
     },
     {
       id: '3',
@@ -100,7 +102,8 @@ export async function seedDatabase() {
       size: 'large',
       weight: 75,
       color: 'Black and Tan',
-      description: 'Max is a loyal and intelligent dog with a calm demeanor. He has basic training and walks well on a leash. Best suited for an experienced owner without small children.',
+      description:
+        'Max is a loyal and intelligent dog with a calm demeanor. He has basic training and walks well on a leash. Best suited for an experienced owner without small children.',
       personality: ['Loyal', 'Intelligent', 'Protective', 'Calm'],
       medicalHistory: 'Fully vaccinated, neutered, minor arthritis managed with supplements',
       specialNeeds: true,
@@ -113,10 +116,10 @@ export async function seedDatabase() {
       location: 'Main Shelter',
       images: [
         'https://images.unsplash.com/photo-1568572933382-74d440642117?w=800',
-        'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=800'
+        'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-01-20').toISOString()
+      dateAdded: new Date('2024-01-20').toISOString(),
     },
     {
       id: '4',
@@ -129,7 +132,8 @@ export async function seedDatabase() {
       size: 'medium',
       weight: 22,
       color: 'Tricolor',
-      description: 'Bella is a playful and curious puppy who loves everyone she meets! She is still learning basic commands and would benefit from puppy training classes.',
+      description:
+        'Bella is a playful and curious puppy who loves everyone she meets! She is still learning basic commands and would benefit from puppy training classes.',
       personality: ['Playful', 'Curious', 'Friendly', 'Energetic'],
       medicalHistory: 'Vaccinations in progress, spayed, microchipped',
       specialNeeds: false,
@@ -142,10 +146,10 @@ export async function seedDatabase() {
       location: 'Foster Home',
       images: [
         'https://images.unsplash.com/photo-1505628346881-b72b27e84530?w=800',
-        'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800'
+        'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-02-10').toISOString()
+      dateAdded: new Date('2024-02-10').toISOString(),
     },
     {
       id: '5',
@@ -158,7 +162,8 @@ export async function seedDatabase() {
       size: 'medium',
       weight: 12,
       color: 'Gray',
-      description: 'Shadow is a beautiful Persian cat with a luxurious coat that requires regular grooming. He is quiet and enjoys a peaceful environment.',
+      description:
+        'Shadow is a beautiful Persian cat with a luxurious coat that requires regular grooming. He is quiet and enjoys a peaceful environment.',
       personality: ['Quiet', 'Gentle', 'Sophisticated', 'Calm'],
       medicalHistory: 'Vaccinated, neutered, requires regular grooming',
       specialNeeds: true,
@@ -171,10 +176,10 @@ export async function seedDatabase() {
       location: 'Main Shelter',
       images: [
         'https://images.unsplash.com/photo-1589883661923-6476cb0ae9f2?w=800',
-        'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800'
+        'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-01-25').toISOString()
+      dateAdded: new Date('2024-01-25').toISOString(),
     },
     {
       id: '6',
@@ -187,7 +192,8 @@ export async function seedDatabase() {
       size: 'large',
       weight: 70,
       color: 'Golden',
-      description: 'Charlie is a gentle senior dog who enjoys relaxed walks and lots of naps. He has spent his whole life being loved and is looking for a quiet retirement home.',
+      description:
+        'Charlie is a gentle senior dog who enjoys relaxed walks and lots of naps. He has spent his whole life being loved and is looking for a quiet retirement home.',
       personality: ['Gentle', 'Calm', 'Sweet', 'Relaxed'],
       medicalHistory: 'Vaccinated, neutered, on medication for mild heart condition',
       specialNeeds: true,
@@ -200,10 +206,10 @@ export async function seedDatabase() {
       location: 'Foster Home',
       images: [
         'https://images.unsplash.com/photo-1633722715463-d30f4f325e24?w=800',
-        'https://images.unsplash.com/photo-1563395440-8e82eaed7f84?w=800'
+        'https://images.unsplash.com/photo-1563395440-8e82eaed7f84?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-02-05').toISOString()
+      dateAdded: new Date('2024-02-05').toISOString(),
     },
     {
       id: '7',
@@ -216,7 +222,8 @@ export async function seedDatabase() {
       size: 'small',
       weight: 7,
       color: 'Seal Point',
-      description: 'Mittens is a vocal and social kitten who loves to chat and follow you around. She would do well in an active household where she gets lots of attention.',
+      description:
+        'Mittens is a vocal and social kitten who loves to chat and follow you around. She would do well in an active household where she gets lots of attention.',
       personality: ['Vocal', 'Social', 'Playful', 'Curious'],
       medicalHistory: 'Vaccinations current, spayed, microchipped',
       specialNeeds: false,
@@ -229,10 +236,10 @@ export async function seedDatabase() {
       location: 'Main Shelter',
       images: [
         'https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=800',
-        'https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=800'
+        'https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-02-12').toISOString()
+      dateAdded: new Date('2024-02-12').toISOString(),
     },
     {
       id: '8',
@@ -245,7 +252,8 @@ export async function seedDatabase() {
       size: 'large',
       weight: 60,
       color: 'Brindle',
-      description: 'Rocky is a muscular and energetic dog who loves to play and would make an excellent running or hiking partner. He is dog-selective and should meet any potential canine siblings first.',
+      description:
+        'Rocky is a muscular and energetic dog who loves to play and would make an excellent running or hiking partner. He is dog-selective and should meet any potential canine siblings first.',
       personality: ['Energetic', 'Loyal', 'Strong', 'Playful'],
       medicalHistory: 'Vaccinated, neutered, healthy',
       specialNeeds: false,
@@ -258,10 +266,10 @@ export async function seedDatabase() {
       location: 'Main Shelter',
       images: [
         'https://images.unsplash.com/photo-1587764379873-97837921fd44?w=800',
-        'https://images.unsplash.com/photo-1554224311-beee415c201f?w=800'
+        'https://images.unsplash.com/photo-1554224311-beee415c201f?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-01-30').toISOString()
+      dateAdded: new Date('2024-01-30').toISOString(),
     },
     {
       id: '9',
@@ -274,7 +282,8 @@ export async function seedDatabase() {
       size: 'small',
       weight: 4,
       color: 'White and Brown',
-      description: 'Daisy is an adorable bunny who loves to hop around and explore. She is litter-trained and enjoys munching on fresh vegetables.',
+      description:
+        'Daisy is an adorable bunny who loves to hop around and explore. She is litter-trained and enjoys munching on fresh vegetables.',
       personality: ['Curious', 'Gentle', 'Social', 'Playful'],
       medicalHistory: 'Spayed, vaccinated',
       specialNeeds: false,
@@ -287,10 +296,10 @@ export async function seedDatabase() {
       location: 'Main Shelter',
       images: [
         'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=800',
-        'https://images.unsplash.com/photo-1590682680682-bebc35c70e50?w=800'
+        'https://images.unsplash.com/photo-1590682680682-bebc35c70e50?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-02-08').toISOString()
+      dateAdded: new Date('2024-02-08').toISOString(),
     },
     {
       id: '10',
@@ -303,7 +312,8 @@ export async function seedDatabase() {
       size: 'large',
       weight: 18,
       color: 'Brown Tabby',
-      description: 'Oliver is a gentle giant who loves to play with feather toys and enjoys the company of his human friends. Despite his size, he is very gentle and good with children.',
+      description:
+        'Oliver is a gentle giant who loves to play with feather toys and enjoys the company of his human friends. Despite his size, he is very gentle and good with children.',
       personality: ['Gentle', 'Playful', 'Social', 'Laid-back'],
       medicalHistory: 'Vaccinated, neutered, healthy',
       specialNeeds: false,
@@ -316,11 +326,11 @@ export async function seedDatabase() {
       location: 'Foster Home',
       images: [
         'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=800',
-        'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800'
+        'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800',
       ],
       status: 'available',
-      dateAdded: new Date('2024-01-28').toISOString()
-    }
+      dateAdded: new Date('2024-01-28').toISOString(),
+    },
   ];
 
   await writeDB('users.json', users);

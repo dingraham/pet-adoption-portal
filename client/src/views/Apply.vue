@@ -39,13 +39,13 @@ const application = ref({
   financiallyPrepared: false,
   // Step 5 - Review
   signature: '',
-  agreedToTerms: false
+  agreedToTerms: false,
 });
 
 const newPet = ref({
   type: '',
   name: '',
-  age: ''
+  age: '',
 });
 
 const fetchPet = async () => {
@@ -83,9 +83,14 @@ const validateStep = () => {
 
   switch (currentStep.value) {
     case 1:
-      if (!application.value.firstName || !application.value.lastName ||
-          !application.value.email || !application.value.phone ||
-          !application.value.address || !application.value.dateOfBirth) {
+      if (
+        !application.value.firstName ||
+        !application.value.lastName ||
+        !application.value.email ||
+        !application.value.phone ||
+        !application.value.address ||
+        !application.value.dateOfBirth
+      ) {
         error.value = 'Please fill in all required fields';
         return false;
       }
@@ -98,8 +103,12 @@ const validateStep = () => {
       }
       break;
     case 2:
-      if (!application.value.housingType || !application.value.ownOrRent ||
-          !application.value.hasYard || !application.value.householdMembers) {
+      if (
+        !application.value.housingType ||
+        !application.value.ownOrRent ||
+        !application.value.hasYard ||
+        !application.value.householdMembers
+      ) {
         error.value = 'Please fill in all required fields';
         return false;
       }
@@ -115,8 +124,12 @@ const validateStep = () => {
       }
       break;
     case 4:
-      if (!application.value.whyThisPet || !application.value.activityLevel ||
-          !application.value.hoursAlone || !application.value.financiallyPrepared) {
+      if (
+        !application.value.whyThisPet ||
+        !application.value.activityLevel ||
+        !application.value.hoursAlone ||
+        !application.value.financiallyPrepared
+      ) {
         error.value = 'Please fill in all required fields';
         return false;
       }
@@ -159,10 +172,16 @@ onMounted(fetchPet);
       </div>
 
       <!-- Error/Success Messages -->
-      <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div
+        v-if="error"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+      >
         {{ error }}
       </div>
-      <div v-if="success" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+      <div
+        v-if="success"
+        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
+      >
         {{ success }}
       </div>
 
@@ -335,9 +354,7 @@ onMounted(fetchPet);
         <h2 class="text-2xl font-bold mb-4">Pet Experience</h2>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Current Pets
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-2"> Current Pets </label>
 
           <div class="bg-gray-50 p-4 rounded-md mb-4">
             <div class="grid grid-cols-3 gap-2 mb-2">
@@ -376,10 +393,7 @@ onMounted(fetchPet);
               class="flex justify-between items-center bg-white p-3 rounded border"
             >
               <span>{{ pet.type }} - {{ pet.name }} ({{ pet.age }})</span>
-              <button
-                @click="removePet(index)"
-                class="text-red-600 hover:text-red-800"
-              >
+              <button @click="removePet(index)" class="text-red-600 hover:text-red-800">
                 Remove
               </button>
             </div>
@@ -388,7 +402,8 @@ onMounted(fetchPet);
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Previous Pet Experience <span class="text-red-500">*</span> (What happened to previous pets?)
+            Previous Pet Experience <span class="text-red-500">*</span> (What happened to previous
+            pets?)
           </label>
           <textarea
             v-model="application.previousPets"
@@ -400,9 +415,7 @@ onMounted(fetchPet);
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Veterinarian Name
-            </label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"> Veterinarian Name </label>
             <input
               v-model="application.veterinarianName"
               type="text"
@@ -410,9 +423,7 @@ onMounted(fetchPet);
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Veterinarian Phone
-            </label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"> Veterinarian Phone </label>
             <input
               v-model="application.veterinarianPhone"
               type="tel"
@@ -472,7 +483,8 @@ onMounted(fetchPet);
             class="mr-2"
           />
           <label for="financiallyPrepared" class="text-sm text-gray-700">
-            I am financially prepared for veterinary care, food, and other pet expenses <span class="text-red-500">*</span>
+            I am financially prepared for veterinary care, food, and other pet expenses
+            <span class="text-red-500">*</span>
           </label>
         </div>
       </div>
@@ -521,16 +533,11 @@ onMounted(fetchPet);
         </div>
 
         <div class="flex items-start">
-          <input
-            v-model="application.agreedToTerms"
-            type="checkbox"
-            id="terms"
-            class="mr-2 mt-1"
-          />
+          <input v-model="application.agreedToTerms" type="checkbox" id="terms" class="mr-2 mt-1" />
           <label for="terms" class="text-sm text-gray-700">
-            I agree that all information provided is accurate and I understand that
-            false information may result in denial of adoption. I agree to the shelter's
-            terms and conditions. <span class="text-red-500">*</span>
+            I agree that all information provided is accurate and I understand that false
+            information may result in denial of adoption. I agree to the shelter's terms and
+            conditions. <span class="text-red-500">*</span>
           </label>
         </div>
       </div>

@@ -20,7 +20,7 @@ const filters = ref({
   gender: '',
   search: '',
   sortBy: 'dateAdded',
-  sortOrder: 'desc'
+  sortOrder: 'desc',
 });
 
 const currentPage = ref(1);
@@ -32,7 +32,7 @@ const fetchPets = async () => {
   try {
     const response = await petsAPI.getAll({
       ...filters.value,
-      page: currentPage.value
+      page: currentPage.value,
     });
     pets.value = response.data.pets;
     totalPages.value = response.data.totalPages;
@@ -65,7 +65,7 @@ const toggleFavorite = async (petId) => {
   try {
     if (isFavorite(petId)) {
       await favoritesAPI.remove(petId);
-      favorites.value = favorites.value.filter(id => id !== petId);
+      favorites.value = favorites.value.filter((id) => id !== petId);
     } else {
       await favoritesAPI.add(petId);
       favorites.value.push(petId);
@@ -88,7 +88,7 @@ const resetFilters = () => {
     gender: '',
     search: '',
     sortBy: 'dateAdded',
-    sortOrder: 'desc'
+    sortOrder: 'desc',
   };
   fetchPets();
 };
@@ -104,7 +104,10 @@ onMounted(() => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
       <div data-testid="page-header" class="text-center mb-12">
-        <h1 data-testid="page-title" class="text-5xl md:text-6xl font-display font-bold text-gray-900 mb-4">
+        <h1
+          data-testid="page-title"
+          class="text-5xl md:text-6xl font-display font-bold text-gray-900 mb-4"
+        >
           Adopt a Pet
         </h1>
         <p data-testid="page-subtitle" class="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -164,7 +167,11 @@ onMounted(() => {
         </div>
 
         <!-- Expanded Filters -->
-        <div v-if="showFilters" data-testid="expanded-filters" class="pt-6 border-t border-gray-200">
+        <div
+          v-if="showFilters"
+          data-testid="expanded-filters"
+          class="pt-6 border-t border-gray-200"
+        >
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <label class="block text-sm font-bold text-gray-700 mb-2">Age</label>
@@ -226,7 +233,8 @@ onMounted(() => {
       <!-- Results Count -->
       <div data-testid="results-count" class="mb-6">
         <p class="text-gray-700 text-lg font-medium">
-          <span data-testid="pet-count" class="font-bold text-gray-900">{{ totalCount }}</span> pets available for adoption
+          <span data-testid="pet-count" class="font-bold text-gray-900">{{ totalCount }}</span> pets
+          available for adoption
         </p>
       </div>
 
@@ -283,16 +291,28 @@ onMounted(() => {
               <!-- Pet Info -->
               <div class="flex-1 flex flex-col min-w-0">
                 <div class="flex-1">
-                  <h3 :data-testid="`pet-name-${pet.id}`" class="text-2xl font-display font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                  <h3
+                    :data-testid="`pet-name-${pet.id}`"
+                    class="text-2xl font-display font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors"
+                  >
                     {{ pet.name }}
                   </h3>
-                  <p :data-testid="`pet-breed-${pet.id}`" class="text-gray-600 mb-3 font-semibold capitalize">
+                  <p
+                    :data-testid="`pet-breed-${pet.id}`"
+                    class="text-gray-600 mb-3 font-semibold capitalize"
+                  >
                     {{ pet.breed }}
                   </p>
-                  <p :data-testid="`pet-details-${pet.id}`" class="text-sm text-gray-500 mb-3 font-medium">
+                  <p
+                    :data-testid="`pet-details-${pet.id}`"
+                    class="text-sm text-gray-500 mb-3 font-medium"
+                  >
                     {{ pet.age }} years old • {{ pet.gender }}
                   </p>
-                  <p :data-testid="`pet-description-${pet.id}`" class="text-gray-700 mb-4 line-clamp-3 text-sm leading-relaxed">
+                  <p
+                    :data-testid="`pet-description-${pet.id}`"
+                    class="text-gray-700 mb-4 line-clamp-3 text-sm leading-relaxed"
+                  >
                     {{ pet.description }}
                   </p>
 
@@ -312,7 +332,7 @@ onMounted(() => {
                 <button
                   :data-testid="`view-details-button-${pet.id}`"
                   class="w-full py-3 rounded-lg font-bold transition-colors shadow-sm hover:shadow-md"
-                  style="background-color: #2ea3f2; color: #ffffff; font-size: 16px;"
+                  style="background-color: #2ea3f2; color: #ffffff; font-size: 16px"
                   @mouseover="$event.target.style.backgroundColor = '#1890ff'"
                   @mouseout="$event.target.style.backgroundColor = '#2ea3f2'"
                 >
@@ -326,7 +346,9 @@ onMounted(() => {
 
       <!-- Empty State -->
       <div v-else class="text-center py-20 bg-white rounded-xl shadow-soft">
-        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div
+          class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
           <span class="text-5xl">🔍</span>
         </div>
         <h3 class="text-3xl font-bold text-gray-900 mb-3">No pets found</h3>
@@ -340,30 +362,49 @@ onMounted(() => {
       </div>
 
       <!-- Pagination -->
-      <div v-if="totalPages > 1 && pets.length > 0" data-testid="pagination" class="flex justify-center items-center gap-4 mt-12">
+      <div
+        v-if="totalPages > 1 && pets.length > 0"
+        data-testid="pagination"
+        class="flex justify-center items-center gap-4 mt-12"
+      >
         <button
-          @click="currentPage--; fetchPets()"
+          @click="
+            currentPage--;
+            fetchPets();
+          "
           :disabled="currentPage === 1"
           data-testid="pagination-previous"
           class="px-6 py-3 bg-white border-2 border-gray-300 rounded-lg font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:border-primary-500 hover:text-primary-600 hover:bg-primary-50 transition-all shadow-sm"
-          style="color: #374151; font-size: 16px;"
+          style="color: #374151; font-size: 16px"
         >
           ← Previous
         </button>
 
-        <div class="flex items-center gap-3 bg-white px-6 py-3 rounded-lg shadow-sm border border-gray-200">
-          <span class="text-gray-600 font-medium" style="color: #4b5563;">Page</span>
-          <span data-testid="current-page" class="px-4 py-1.5 bg-primary-500 text-white rounded-md font-bold" style="font-size: 14px; color: #ffffff; background-color: #2ea3f2;">{{ currentPage }}</span>
-          <span class="text-gray-600 font-medium" style="color: #4b5563;">of</span>
-          <span data-testid="total-pages" class="font-bold text-gray-900" style="color: #111827;">{{ totalPages }}</span>
+        <div
+          class="flex items-center gap-3 bg-white px-6 py-3 rounded-lg shadow-sm border border-gray-200"
+        >
+          <span class="text-gray-600 font-medium" style="color: #4b5563">Page</span>
+          <span
+            data-testid="current-page"
+            class="px-4 py-1.5 bg-primary-500 text-white rounded-md font-bold"
+            style="font-size: 14px; color: #ffffff; background-color: #2ea3f2"
+            >{{ currentPage }}</span
+          >
+          <span class="text-gray-600 font-medium" style="color: #4b5563">of</span>
+          <span data-testid="total-pages" class="font-bold text-gray-900" style="color: #111827">{{
+            totalPages
+          }}</span>
         </div>
 
         <button
-          @click="currentPage++; fetchPets()"
+          @click="
+            currentPage++;
+            fetchPets();
+          "
           :disabled="currentPage === totalPages"
           data-testid="pagination-next"
           class="px-6 py-3 bg-white border-2 border-gray-300 rounded-lg font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:border-primary-500 hover:text-primary-600 hover:bg-primary-50 transition-all shadow-sm"
-          style="color: #374151; font-size: 16px;"
+          style="color: #374151; font-size: 16px"
         >
           Next →
         </button>

@@ -21,7 +21,7 @@ const answers = ref({
   hasYard: false,
   hasKids: false,
   hasOtherPets: false,
-  timeCommitment: ''
+  timeCommitment: '',
 });
 
 const questions = [
@@ -33,8 +33,8 @@ const questions = [
       { value: 'dog', label: 'Dog', emoji: '🐕' },
       { value: 'cat', label: 'Cat', emoji: '🐈' },
       { value: 'rabbit', label: 'Rabbit', emoji: '🐰' },
-      { value: 'any', label: "I'm open to any!", emoji: '❤️' }
-    ]
+      { value: 'any', label: "I'm open to any!", emoji: '❤️' },
+    ],
   },
   {
     id: 'sizePreference',
@@ -43,8 +43,8 @@ const questions = [
     options: [
       { value: 'small', label: 'Small (under 25 lbs)', emoji: '🐕‍🦺' },
       { value: 'medium', label: 'Medium (25-60 lbs)', emoji: '🐕' },
-      { value: 'large', label: 'Large (over 60 lbs)', emoji: '🦮' }
-    ]
+      { value: 'large', label: 'Large (over 60 lbs)', emoji: '🦮' },
+    ],
   },
   {
     id: 'activityLevel',
@@ -53,8 +53,8 @@ const questions = [
     options: [
       { value: 'low', label: 'Low - I prefer quiet, relaxed activities', emoji: '🛋️' },
       { value: 'moderate', label: 'Moderate - Daily walks and some playtime', emoji: '🚶' },
-      { value: 'high', label: 'High - Long walks, running, lots of activity', emoji: '🏃' }
-    ]
+      { value: 'high', label: 'High - Long walks, running, lots of activity', emoji: '🏃' },
+    ],
   },
   {
     id: 'experience',
@@ -63,8 +63,8 @@ const questions = [
     options: [
       { value: 'first-time', label: 'First-time pet owner', emoji: '🆕' },
       { value: 'some', label: 'Some experience', emoji: '👍' },
-      { value: 'experienced', label: 'Very experienced', emoji: '⭐' }
-    ]
+      { value: 'experienced', label: 'Very experienced', emoji: '⭐' },
+    ],
   },
   {
     id: 'housingType',
@@ -73,8 +73,8 @@ const questions = [
     options: [
       { value: 'apartment', label: 'Apartment', emoji: '🏢' },
       { value: 'condo', label: 'Condo/Townhouse', emoji: '🏘️' },
-      { value: 'house', label: 'House', emoji: '🏡' }
-    ]
+      { value: 'house', label: 'House', emoji: '🏡' },
+    ],
   },
   {
     id: 'hasYard',
@@ -82,8 +82,8 @@ const questions = [
     type: 'boolean',
     options: [
       { value: true, label: 'Yes', emoji: '✅' },
-      { value: false, label: 'No', emoji: '❌' }
-    ]
+      { value: false, label: 'No', emoji: '❌' },
+    ],
   },
   {
     id: 'hasKids',
@@ -91,8 +91,8 @@ const questions = [
     type: 'boolean',
     options: [
       { value: true, label: 'Yes', emoji: '👶' },
-      { value: false, label: 'No', emoji: '❌' }
-    ]
+      { value: false, label: 'No', emoji: '❌' },
+    ],
   },
   {
     id: 'hasOtherPets',
@@ -100,8 +100,8 @@ const questions = [
     type: 'boolean',
     options: [
       { value: true, label: 'Yes', emoji: '🐾' },
-      { value: false, label: 'No', emoji: '❌' }
-    ]
+      { value: false, label: 'No', emoji: '❌' },
+    ],
   },
   {
     id: 'timeCommitment',
@@ -110,9 +110,9 @@ const questions = [
     options: [
       { value: 'low', label: '1-2 hours', emoji: '⏰' },
       { value: 'moderate', label: '2-4 hours', emoji: '⏱️' },
-      { value: 'high', label: '4+ hours', emoji: '⏳' }
-    ]
-  }
+      { value: 'high', label: '4+ hours', emoji: '⏳' },
+    ],
+  },
 ];
 
 const currentQ = computed(() => questions[currentQuestion.value]);
@@ -177,12 +177,12 @@ const submitQuiz = async () => {
 
     // Fetch pet details for top matches
     const topMatches = matchResults.value.slice(0, 9);
-    const petPromises = topMatches.map(match => petsAPI.getById(match.petId));
+    const petPromises = topMatches.map((match) => petsAPI.getById(match.petId));
     const pets = await Promise.all(petPromises);
 
     matchedPets.value = pets.map((petResponse, index) => ({
       ...petResponse.data,
-      matchScore: topMatches[index].score
+      matchScore: topMatches[index].score,
     }));
 
     showResults.value = true;
@@ -204,7 +204,7 @@ const restartQuiz = () => {
     hasYard: false,
     hasKids: false,
     hasOtherPets: false,
-    timeCommitment: ''
+    timeCommitment: '',
   };
 };
 </script>
@@ -246,7 +246,7 @@ const restartQuiz = () => {
               'w-full p-4 rounded-lg border-2 text-left transition flex items-center space-x-4',
               isSelected(currentQ.id, option.value)
                 ? 'border-indigo-600 bg-indigo-50'
-                : 'border-gray-300 hover:border-indigo-400'
+                : 'border-gray-300 hover:border-indigo-400',
             ]"
           >
             <span class="text-3xl">{{ option.emoji }}</span>
@@ -294,11 +294,7 @@ const restartQuiz = () => {
           @click="router.push(`/pets/${pet.id}`)"
         >
           <div class="relative">
-            <img
-              :src="pet.images[0]"
-              :alt="pet.name"
-              class="w-full h-48 object-cover"
-            />
+            <img :src="pet.images[0]" :alt="pet.name" class="w-full h-48 object-cover" />
             <div class="absolute top-4 right-4 bg-white rounded-full px-3 py-1 shadow-md">
               <span class="font-bold text-indigo-600">{{ pet.matchScore }}%</span>
             </div>

@@ -64,8 +64,8 @@ export const test = base.extend({
     const response = await request.post('http://localhost:3000/api/auth/login', {
       data: {
         email: 'user@petadoption.com',
-        password: 'user123'
-      }
+        password: 'user123',
+      },
     });
 
     const { token } = await response.json();
@@ -74,12 +74,12 @@ export const test = base.extend({
     const context = await request.newContext({
       baseURL: 'http://localhost:3000/api',
       extraHTTPHeaders: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     await use(context);
-  }
+  },
 });
 
 export { expect } from '@playwright/test';

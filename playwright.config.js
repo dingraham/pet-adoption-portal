@@ -1,4 +1,4 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright Configuration for Pet Adoption Portal
@@ -9,7 +9,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   // Test directory - where all test files are located
-  testDir: "./tests",
+  testDir: './tests',
 
   // Maximum time one test can run (30 seconds)
   timeout: 30000,
@@ -29,24 +29,24 @@ export default defineConfig({
 
   // Reporter to use - 'html' generates a nice HTML report
   // 'list' shows test results in the terminal as they run
-  reporter: [["list"], ["html", { outputFolder: "playwright-report" }]],
+  reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
 
   // Output directory for test artifacts (screenshots, videos, traces)
-  outputDir: "test-results",
+  outputDir: 'test-results',
 
   // Shared settings for all projects
   use: {
     // Base URL for tests - all page.goto('/path') will use this
-    baseURL: "http://localhost:5173",
+    baseURL: 'http://localhost:5173',
 
     // Collect trace - always on in CI for artifact debugging
-    trace: process.env.CI ? "on" : "on-first-retry",
+    trace: process.env.CI ? 'on' : 'on-first-retry',
 
     // Screenshot - always capture in CI for artifact debugging
-    screenshot: process.env.CI ? "on" : "only-on-failure",
+    screenshot: process.env.CI ? 'on' : 'only-on-failure',
 
     // Video - always record in CI for artifact debugging
-    video: process.env.CI ? "on" : "retain-on-failure",
+    video: process.env.CI ? 'on' : 'retain-on-failure',
 
     // Maximum time for actions like click, fill, etc.
     actionTimeout: 10000,
@@ -58,8 +58,8 @@ export default defineConfig({
   // Configure projects for major browsers
   projects: [
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
     },
 
     // Uncomment to test on Firefox
@@ -89,20 +89,20 @@ export default defineConfig({
   // This will automatically start your app before running tests
   webServer: [
     {
-      command: "cd server && npm run dev",
-      url: "http://localhost:3000/api/health",
+      command: 'cd server && npm run dev',
+      url: 'http://localhost:3000/api/health',
       timeout: 120000,
       reuseExistingServer: !process.env.CI,
-      stdout: "pipe",
-      stderr: "pipe",
+      stdout: 'pipe',
+      stderr: 'pipe',
     },
     {
-      command: "cd client && npm run dev",
-      url: "http://localhost:5173",
+      command: 'cd client && npm run dev',
+      url: 'http://localhost:5173',
       timeout: 120000,
       reuseExistingServer: !process.env.CI,
-      stdout: "pipe",
-      stderr: "pipe",
+      stdout: 'pipe',
+      stderr: 'pipe',
     },
   ],
 });

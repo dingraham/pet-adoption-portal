@@ -45,7 +45,7 @@ export async function initDB() {
     'applications.json': [],
     'favorites.json': [],
     'appointments.json': [],
-    'quizResults.json': []
+    'quizResults.json': [],
   };
 
   for (const [filename, defaultData] of Object.entries(files)) {

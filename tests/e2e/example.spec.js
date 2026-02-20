@@ -18,7 +18,6 @@ import { test, expect } from '@playwright/test';
  * Tests use test()
  */
 test.describe('Example Test Suite', () => {
-
   /**
    * HOOKS
    * beforeEach, afterEach, beforeAll, afterAll
@@ -64,7 +63,7 @@ test.describe('Example Test Suite', () => {
     const submitButton = page.getByRole('button', { name: 'Login' });
 
     // 3. By text
-    const registerLink = page.getByText('Don\'t have an account?');
+    const registerLink = page.getByText("Don't have an account?");
 
     // 4. By label (for form inputs)
     const passwordInput = page.getByLabel('Password');
@@ -172,7 +171,7 @@ test.describe('Example Test Suite', () => {
 
       await route.fulfill({
         response,
-        json: body
+        json: body,
       });
     });
 
@@ -194,7 +193,7 @@ test.describe('Example Test Suite', () => {
     expect(count).toBeGreaterThan(0);
 
     // Iterate through them using .nth() or .all()
-    for (let i = 0; i < await petCards.count(); i++) {
+    for (let i = 0; i < (await petCards.count()); i++) {
       const card = petCards.nth(i);
       await expect(card).toBeVisible();
     }
@@ -235,7 +234,6 @@ test.describe('Example Test Suite', () => {
     // Use test.only() to run only this test
     // NOTE: Remove .only before committing!
   });
-
 });
 
 // ============================================================================
@@ -249,7 +247,6 @@ test.describe('Example Test Suite', () => {
 import { test as authTest } from '../fixtures/auth.fixture.js';
 
 authTest.describe('Tests with authenticated user', () => {
-
   authTest('can access dashboard when logged in', async ({ userPage }) => {
     // userPage is already logged in as a regular user
     await userPage.goto('/dashboard');
@@ -261,7 +258,6 @@ authTest.describe('Tests with authenticated user', () => {
     await adminPage.goto('/admin');
     await expect(adminPage).toHaveURL(/admin/);
   });
-
 });
 
 /**

@@ -82,16 +82,16 @@ pet-adoption-portal/
 **Cypress:**
 
 ```javascript
-cy.get('[data-testid="login-email"]').type("user@example.com");
+cy.get('[data-testid="login-email"]').type('user@example.com');
 cy.get('[data-testid="login-submit"]').click();
-cy.url().should("include", "/dashboard");
+cy.url().should('include', '/dashboard');
 ```
 
 **Playwright:**
 
 ```javascript
-await page.getByTestId("login-email").fill("user@example.com");
-await page.getByTestId("login-submit").click();
+await page.getByTestId('login-email').fill('user@example.com');
+await page.getByTestId('login-submit').click();
 await expect(page).toHaveURL(/dashboard/);
 ```
 
@@ -107,19 +107,19 @@ Playwright uses **locators** which are lazy references to elements.
 
 ```javascript
 // 1. BEST: By test ID
-page.getByTestId("login-email");
+page.getByTestId('login-email');
 
 // 2. GREAT: By role (accessibility-friendly)
-page.getByRole("button", { name: "Login" });
+page.getByRole('button', { name: 'Login' });
 
 // 3. GOOD: By label (for form inputs)
-page.getByLabel("Email");
+page.getByLabel('Email');
 
 // 4. OK: By text
-page.getByText("Submit Application");
+page.getByText('Submit Application');
 
 // 5. LAST RESORT: By CSS selector
-page.locator(".some-specific-class");
+page.locator('.some-specific-class');
 ```
 
 ---
@@ -135,7 +135,7 @@ Playwright automatically waits for:
 
 ```javascript
 // This waits automatically until the button is clickable!
-await page.getByTestId("submit-button").click();
+await page.getByTestId('submit-button').click();
 ```
 
 ---
@@ -146,16 +146,16 @@ await page.getByTestId("submit-button").click();
 
 ```javascript
 // cypress/support/commands.js
-Cypress.Commands.add("login", (email, password) => {
-  cy.visit("/login");
+Cypress.Commands.add('login', (email, password) => {
+  cy.visit('/login');
   cy.get('[data-testid="login-email"]').type(email);
   cy.get('[data-testid="login-password"]').type(password);
   cy.get('[data-testid="login-submit"]').click();
 });
 
 // In test:
-it("test", () => {
-  cy.login("user@example.com", "password");
+it('test', () => {
+  cy.login('user@example.com', 'password');
 });
 ```
 
@@ -163,11 +163,11 @@ it("test", () => {
 
 ```javascript
 // tests/fixtures/auth.fixture.js (already created!)
-import { test } from "./fixtures/auth.fixture.js";
+import { test } from './fixtures/auth.fixture.js';
 
-test("can access dashboard", async ({ userPage }) => {
+test('can access dashboard', async ({ userPage }) => {
   // Already logged in! No setup needed
-  await userPage.goto("/dashboard");
+  await userPage.goto('/dashboard');
 });
 ```
 
@@ -194,19 +194,19 @@ npx playwright test --project=firefox
 Create `tests/e2e/login.spec.js`:
 
 ```javascript
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
 
-test.describe("Login Page", () => {
-  test("should allow user to login", async ({ page }) => {
+test.describe('Login Page', () => {
+  test('should allow user to login', async ({ page }) => {
     // Navigate to login page
-    await page.goto("/login");
+    await page.goto('/login');
 
     // Fill in credentials
-    await page.getByTestId("login-email").fill("user@petadoption.com");
-    await page.getByTestId("login-password").fill("user123");
+    await page.getByTestId('login-email').fill('user@petadoption.com');
+    await page.getByTestId('login-password').fill('user123');
 
     // Click login button
-    await page.getByTestId("login-submit").click();
+    await page.getByTestId('login-submit').click();
 
     // Verify redirect to dashboard
     await expect(page).toHaveURL(/dashboard/);
@@ -259,11 +259,11 @@ This is AMAZING for:
 ### Pattern 1: Login Flow
 
 ```javascript
-test("complete login flow", async ({ page }) => {
-  await page.goto("/login");
-  await page.getByTestId("login-email").fill("user@petadoption.com");
-  await page.getByTestId("login-password").fill("user123");
-  await page.getByTestId("login-submit").click();
+test('complete login flow', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByTestId('login-email').fill('user@petadoption.com');
+  await page.getByTestId('login-password').fill('user123');
+  await page.getByTestId('login-submit').click();
   await expect(page).toHaveURL(/dashboard/);
 });
 ```
@@ -271,42 +271,40 @@ test("complete login flow", async ({ page }) => {
 ### Pattern 2: Form Validation
 
 ```javascript
-test("shows error for invalid email", async ({ page }) => {
-  await page.goto("/register");
-  await page.getByTestId("register-email").fill("invalid-email");
-  await page.getByTestId("register-password").fill("password123");
-  await page.getByTestId("register-submit").click();
+test('shows error for invalid email', async ({ page }) => {
+  await page.goto('/register');
+  await page.getByTestId('register-email').fill('invalid-email');
+  await page.getByTestId('register-password').fill('password123');
+  await page.getByTestId('register-submit').click();
 
   // Check for error message
-  await expect(page.getByTestId("register-error")).toBeVisible();
-  await expect(page.getByTestId("register-error")).toContainText(
-    "Invalid email",
-  );
+  await expect(page.getByTestId('register-error')).toBeVisible();
+  await expect(page.getByTestId('register-error')).toContainText('Invalid email');
 });
 ```
 
 ### Pattern 3: Using User Fixture
 
 ```javascript
-import { test } from "../fixtures/auth.fixture.js";
+import { test } from '../fixtures/auth.fixture.js';
 
-test("favorite a pet", async ({ userPage }) => {
+test('favorite a pet', async ({ userPage }) => {
   // Already logged in!
-  await userPage.goto("/pets");
-  await userPage.getByTestId("pet-card-1").hover();
-  await userPage.getByTestId("toggle-favorite-button").first().click();
+  await userPage.goto('/pets');
+  await userPage.getByTestId('pet-card-1').hover();
+  await userPage.getByTestId('toggle-favorite-button').first().click();
 
   // Verify favorite was added
-  await userPage.goto("/dashboard");
-  await expect(userPage.getByText("Favorites")).toBeVisible();
+  await userPage.goto('/dashboard');
+  await expect(userPage.getByText('Favorites')).toBeVisible();
 });
 ```
 
 ### Pattern 4: API Testing
 
 ```javascript
-test("can fetch pets via API", async ({ request }) => {
-  const response = await request.get("http://localhost:3000/api/pets");
+test('can fetch pets via API', async ({ request }) => {
+  const response = await request.get('http://localhost:3000/api/pets');
 
   expect(response.ok()).toBeTruthy();
 
@@ -322,8 +320,8 @@ test("can fetch pets via API", async ({ request }) => {
 ### Method 1: Playwright Inspector (Best!)
 
 ```javascript
-test("debug this test", async ({ page }) => {
-  await page.goto("/login");
+test('debug this test', async ({ page }) => {
+  await page.goto('/login');
   await page.pause(); // ← Opens Playwright Inspector
   // Test pauses here - you can step through
 });
@@ -346,9 +344,9 @@ Click the "eye" icon next to any test to watch it execute step-by-step.
 ### Method 3: Screenshots
 
 ```javascript
-test("take screenshot on failure", async ({ page }) => {
-  await page.goto("/pets");
-  await page.screenshot({ path: "debug-screenshot.png", fullPage: true });
+test('take screenshot on failure', async ({ page }) => {
+  await page.goto('/pets');
+  await page.screenshot({ path: 'debug-screenshot.png', fullPage: true });
 });
 ```
 
@@ -357,10 +355,10 @@ Playwright automatically takes screenshots on failure!
 ### Method 4: Console Logs
 
 ```javascript
-test("check element text", async ({ page }) => {
-  await page.goto("/");
-  const text = await page.locator("h1").textContent();
-  console.log("Heading text:", text);
+test('check element text', async ({ page }) => {
+  await page.goto('/');
+  const text = await page.locator('h1').textContent();
+  console.log('Heading text:', text);
 });
 ```
 
@@ -390,10 +388,10 @@ The report shows:
 
 ```javascript
 // ✅ Good
-await page.getByTestId("login-submit");
+await page.getByTestId('login-submit');
 
 // ❌ Avoid
-await page.locator(".btn.btn-primary.submit-button");
+await page.locator('.btn.btn-primary.submit-button');
 ```
 
 ### 2. **Use descriptive test names**
@@ -412,7 +410,7 @@ test('test1', ...)
 // Each test should work in isolation
 test.beforeEach(async ({ page }) => {
   // Reset state before each test
-  await page.goto("/");
+  await page.goto('/');
 });
 ```
 
@@ -434,11 +432,11 @@ test('test', async ({ page }) => {
 
 ```javascript
 // ✅ Good - auto-waits
-await page.getByTestId("submit").click();
+await page.getByTestId('submit').click();
 
 // ❌ Bad - manual wait
 await page.waitForTimeout(2000);
-await page.getByTestId("submit").click();
+await page.getByTestId('submit').click();
 ```
 
 ---

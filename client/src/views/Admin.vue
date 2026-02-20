@@ -32,7 +32,7 @@ const petForm = ref({
   timeRequirement: 'moderate',
   location: 'Main Shelter',
   images: ['https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800'],
-  status: 'available'
+  status: 'available',
 });
 
 const newPersonalityTrait = ref('');
@@ -40,7 +40,7 @@ const stats = ref({
   totalPets: 0,
   availablePets: 0,
   pendingApplications: 0,
-  approvedApplications: 0
+  approvedApplications: 0,
 });
 
 const fetchPets = async () => {
@@ -48,7 +48,7 @@ const fetchPets = async () => {
     const response = await petsAPI.getAll({ limit: 100 });
     pets.value = response.data.pets;
     stats.value.totalPets = pets.value.length;
-    stats.value.availablePets = pets.value.filter(p => p.status === 'available').length;
+    stats.value.availablePets = pets.value.filter((p) => p.status === 'available').length;
   } catch (err) {
     console.error('Failed to load pets');
   }
@@ -65,8 +65,12 @@ const fetchApplications = async () => {
       app.pet = petResponse.data;
     }
 
-    stats.value.pendingApplications = applications.value.filter(a => a.status === 'pending' || a.status === 'under_review').length;
-    stats.value.approvedApplications = applications.value.filter(a => a.status === 'approved').length;
+    stats.value.pendingApplications = applications.value.filter(
+      (a) => a.status === 'pending' || a.status === 'under_review'
+    ).length;
+    stats.value.approvedApplications = applications.value.filter(
+      (a) => a.status === 'approved'
+    ).length;
   } catch (err) {
     console.error('Failed to load applications');
   }
@@ -100,7 +104,7 @@ const openPetModal = (pet = null) => {
       timeRequirement: 'moderate',
       location: 'Main Shelter',
       images: ['https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800'],
-      status: 'available'
+      status: 'available',
     };
   }
   showPetModal.value = true;
@@ -170,7 +174,7 @@ const getStatusColor = (status) => {
     adopted: 'bg-blue-100 text-blue-800',
     under_review: 'bg-blue-100 text-blue-800',
     approved: 'bg-green-100 text-green-800',
-    rejected: 'bg-red-100 text-red-800'
+    rejected: 'bg-red-100 text-red-800',
   };
   return colors[status] || 'bg-gray-100 text-gray-800';
 };
@@ -214,7 +218,7 @@ onMounted(async () => {
             'py-4 px-1 border-b-2 font-medium text-sm',
             activeTab === 'pets'
               ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              : 'border-transparent text-gray-500 hover:text-gray-700',
           ]"
         >
           Manage Pets
@@ -225,7 +229,7 @@ onMounted(async () => {
             'py-4 px-1 border-b-2 font-medium text-sm',
             activeTab === 'applications'
               ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              : 'border-transparent text-gray-500 hover:text-gray-700',
           ]"
         >
           Review Applications
@@ -248,15 +252,11 @@ onMounted(async () => {
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Pet
-              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pet</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Species
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Age
-              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Age</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Status
               </th>
@@ -269,7 +269,11 @@ onMounted(async () => {
             <tr v-for="pet in pets" :key="pet.id">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <img :src="pet.images[0]" :alt="pet.name" class="w-12 h-12 rounded object-cover" />
+                  <img
+                    :src="pet.images[0]"
+                    :alt="pet.name"
+                    class="w-12 h-12 rounded object-cover"
+                  />
                   <div class="ml-4">
                     <div class="font-medium">{{ pet.name }}</div>
                     <div class="text-sm text-gray-500">{{ pet.breed }}</div>
@@ -279,9 +283,7 @@ onMounted(async () => {
               <td class="px-6 py-4 whitespace-nowrap capitalize">
                 {{ pet.species }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ pet.age }} years
-              </td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ pet.age }} years</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   :class="['px-2 py-1 text-xs rounded-full capitalize', getStatusColor(pet.status)]"
@@ -290,16 +292,10 @@ onMounted(async () => {
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm">
-                <button
-                  @click="openPetModal(pet)"
-                  class="text-indigo-600 hover:underline mr-4"
-                >
+                <button @click="openPetModal(pet)" class="text-indigo-600 hover:underline mr-4">
                   Edit
                 </button>
-                <button
-                  @click="deletePet(pet.id)"
-                  class="text-red-600 hover:underline"
-                >
+                <button @click="deletePet(pet.id)" class="text-red-600 hover:underline">
                   Delete
                 </button>
               </td>
@@ -312,11 +308,7 @@ onMounted(async () => {
     <!-- Applications Tab -->
     <div v-else-if="activeTab === 'applications'">
       <div class="space-y-4">
-        <div
-          v-for="app in applications"
-          :key="app.id"
-          class="bg-white rounded-lg shadow p-6"
-        >
+        <div v-for="app in applications" :key="app.id" class="bg-white rounded-lg shadow p-6">
           <div class="flex justify-between items-start mb-4">
             <div>
               <h3 class="text-xl font-bold">{{ app.firstName }} {{ app.lastName }}</h3>
@@ -329,7 +321,10 @@ onMounted(async () => {
               </p>
             </div>
             <span
-              :class="['px-3 py-1 rounded-full text-sm font-medium capitalize', getStatusColor(app.status)]"
+              :class="[
+                'px-3 py-1 rounded-full text-sm font-medium capitalize',
+                getStatusColor(app.status),
+              ]"
             >
               {{ app.status.replace('_', ' ') }}
             </span>
@@ -339,15 +334,11 @@ onMounted(async () => {
             <div>
               <span class="font-medium">Housing:</span> {{ app.housingType }} ({{ app.ownOrRent }})
             </div>
-            <div>
-              <span class="font-medium">Yard:</span> {{ app.hasYard }}
-            </div>
+            <div><span class="font-medium">Yard:</span> {{ app.hasYard }}</div>
             <div>
               <span class="font-medium">Household:</span> {{ app.householdMembers }} members
             </div>
-            <div>
-              <span class="font-medium">Activity Level:</span> {{ app.activityLevel }}
-            </div>
+            <div><span class="font-medium">Activity Level:</span> {{ app.activityLevel }}</div>
           </div>
 
           <div class="mb-4">
@@ -355,7 +346,10 @@ onMounted(async () => {
             <p class="text-sm text-gray-600">{{ app.whyThisPet }}</p>
           </div>
 
-          <div v-if="app.status === 'pending' || app.status === 'under_review'" class="flex space-x-3">
+          <div
+            v-if="app.status === 'pending' || app.status === 'under_review'"
+            class="flex space-x-3"
+          >
             <button
               @click="updateApplicationStatus(app.id, 'under_review')"
               class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"

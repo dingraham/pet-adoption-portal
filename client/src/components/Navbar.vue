@@ -19,7 +19,9 @@ const handleLogout = () => {
         <!-- Logo and Brand -->
         <div class="flex items-center space-x-8">
           <RouterLink to="/" data-testid="logo-link" class="flex items-center space-x-3 group">
-            <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center shadow-soft group-hover:bg-primary-600 transition-colors">
+            <div
+              class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center shadow-soft group-hover:bg-primary-600 transition-colors"
+            >
               <span class="text-2xl">🐾</span>
             </div>
             <div class="flex flex-col">

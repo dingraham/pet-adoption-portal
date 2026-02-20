@@ -77,10 +77,10 @@ router.post('/submit', authenticateToken, async (req, res) => {
 
     // Calculate match scores for all available pets
     const matches = pets
-      .filter(pet => pet.status === 'available')
-      .map(pet => ({
+      .filter((pet) => pet.status === 'available')
+      .map((pet) => ({
         petId: pet.id,
-        score: calculateMatchScore(quizAnswers, pet)
+        score: calculateMatchScore(quizAnswers, pet),
       }))
       .sort((a, b) => b.score - a.score);
 
@@ -90,11 +90,11 @@ router.post('/submit', authenticateToken, async (req, res) => {
       userId: req.user.id,
       answers: quizAnswers,
       matches,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     // Remove old quiz results for this user
-    const filteredResults = quizResults.filter(r => r.userId !== req.user.id);
+    const filteredResults = quizResults.filter((r) => r.userId !== req.user.id);
     filteredResults.push(quizResult);
     await writeDB('quizResults.json', filteredResults);
 
@@ -109,7 +109,7 @@ router.post('/submit', authenticateToken, async (req, res) => {
 router.get('/results', authenticateToken, async (req, res) => {
   try {
     const quizResults = await readDB('quizResults.json');
-    const userResult = quizResults.find(r => r.userId === req.user.id);
+    const userResult = quizResults.find((r) => r.userId === req.user.id);
 
     if (!userResult) {
       return res.status(404).json({ error: 'No quiz results found' });
