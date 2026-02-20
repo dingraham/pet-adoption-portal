@@ -19,7 +19,7 @@ const success = ref('');
 const appointmentForm = ref({
   date: '',
   time: '',
-  notes: ''
+  notes: '',
 });
 
 const availableSlots = ref([]);
@@ -82,7 +82,7 @@ const scheduleAppointment = async () => {
   try {
     await appointmentsAPI.schedule({
       petId: pet.value.id,
-      ...appointmentForm.value
+      ...appointmentForm.value,
     });
     showScheduleModal.value = false;
     success.value = 'Appointment scheduled successfully!';
@@ -115,7 +115,10 @@ onMounted(fetchPet);
     <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
       {{ error }}
     </div>
-    <div v-if="success" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+    <div
+      v-if="success"
+      class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
+    >
       {{ success }}
     </div>
 
@@ -145,7 +148,7 @@ onMounted(fetchPet);
             @click="currentImageIndex = index"
             :class="[
               'w-20 h-20 object-cover rounded cursor-pointer',
-              currentImageIndex === index ? 'ring-4 ring-indigo-600' : ''
+              currentImageIndex === index ? 'ring-4 ring-indigo-600' : '',
             ]"
           />
         </div>

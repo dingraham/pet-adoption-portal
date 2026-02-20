@@ -9,7 +9,7 @@ const authStore = useAuthStore();
 
 const form = ref({
   email: '',
-  password: ''
+  password: '',
 });
 
 const error = ref('');
@@ -36,15 +36,17 @@ const handleSubmit = async () => {
     <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
       <h2 class="text-3xl font-bold text-center mb-6">Login</h2>
 
-      <div v-if="error" data-testid="login-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div
+        v-if="error"
+        data-testid="login-error"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+      >
         {{ error }}
       </div>
 
       <form @submit.prevent="handleSubmit" class="space-y-4" data-testid="login-form">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> Email </label>
           <input
             v-model="form.email"
             type="email"
@@ -56,9 +58,7 @@ const handleSubmit = async () => {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Password
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> Password </label>
           <input
             v-model="form.password"
             type="password"

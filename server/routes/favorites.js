@@ -8,9 +8,9 @@ const router = express.Router();
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const favorites = await readDB('favorites.json');
-    const userFavorites = favorites.filter(fav => fav.userId === req.user.id);
+    const userFavorites = favorites.filter((fav) => fav.userId === req.user.id);
 
-    res.json(userFavorites.map(fav => fav.petId));
+    res.json(userFavorites.map((fav) => fav.petId));
   } catch (error) {
     console.error('Get favorites error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -24,9 +24,7 @@ router.post('/:petId', authenticateToken, async (req, res) => {
     const { petId } = req.params;
 
     // Check if already favorited
-    const existing = favorites.find(
-      fav => fav.userId === req.user.id && fav.petId === petId
-    );
+    const existing = favorites.find((fav) => fav.userId === req.user.id && fav.petId === petId);
 
     if (existing) {
       return res.status(400).json({ error: 'Pet already in favorites' });
@@ -36,7 +34,7 @@ router.post('/:petId', authenticateToken, async (req, res) => {
       id: Date.now().toString(),
       userId: req.user.id,
       petId,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     favorites.push(newFavorite);
@@ -56,7 +54,7 @@ router.delete('/:petId', authenticateToken, async (req, res) => {
     const { petId } = req.params;
 
     const filteredFavorites = favorites.filter(
-      fav => !(fav.userId === req.user.id && fav.petId === petId)
+      (fav) => !(fav.userId === req.user.id && fav.petId === petId)
     );
 
     await writeDB('favorites.json', filteredFavorites);
