@@ -20,33 +20,31 @@ router.get('/', async (req, res) => {
       page = 1,
       limit = 12,
       sortBy = 'dateAdded',
-      sortOrder = 'desc'
+      sortOrder = 'desc',
     } = req.query;
 
     // Filter by status
-    pets = pets.filter(pet => pet.status === status);
+    pets = pets.filter((pet) => pet.status === status);
 
     // Apply filters
     if (species) {
-      pets = pets.filter(pet => pet.species === species);
+      pets = pets.filter((pet) => pet.species === species);
     }
     if (age) {
-      pets = pets.filter(pet => pet.ageCategory === age);
+      pets = pets.filter((pet) => pet.ageCategory === age);
     }
     if (size) {
-      pets = pets.filter(pet => pet.size === size);
+      pets = pets.filter((pet) => pet.size === size);
     }
     if (gender) {
-      pets = pets.filter(pet => pet.gender === gender);
+      pets = pets.filter((pet) => pet.gender === gender);
     }
     if (specialNeeds) {
-      pets = pets.filter(pet => pet.specialNeeds === (specialNeeds === 'true'));
+      pets = pets.filter((pet) => pet.specialNeeds === (specialNeeds === 'true'));
     }
     if (goodWith) {
       const goodWithArray = goodWith.split(',');
-      pets = pets.filter(pet =>
-        goodWithArray.every(item => pet.goodWith?.includes(item))
-      );
+      pets = pets.filter((pet) => goodWithArray.every((item) => pet.goodWith?.includes(item)));
     }
     if (search) {
       // Sanitize search input to prevent regex injection
@@ -58,10 +56,11 @@ router.get('/', async (req, res) => {
         return res.status(400).json({ error: 'Search query too long' });
       }
 
-      pets = pets.filter(pet =>
-        pet.name.toLowerCase().includes(searchLower) ||
-        pet.description.toLowerCase().includes(searchLower) ||
-        pet.breed.toLowerCase().includes(searchLower)
+      pets = pets.filter(
+        (pet) =>
+          pet.name.toLowerCase().includes(searchLower) ||
+          pet.description.toLowerCase().includes(searchLower) ||
+          pet.breed.toLowerCase().includes(searchLower)
       );
     }
 
@@ -91,7 +90,7 @@ router.get('/', async (req, res) => {
       pets: paginatedPets,
       totalCount: pets.length,
       currentPage: parseInt(page),
-      totalPages: Math.ceil(pets.length / limit)
+      totalPages: Math.ceil(pets.length / limit),
     });
   } catch (error) {
     console.error('Get pets error:', error);
@@ -103,7 +102,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const pets = await readDB('pets.json');
-    const pet = pets.find(p => p.id === req.params.id);
+    const pet = pets.find((p) => p.id === req.params.id);
 
     if (!pet) {
       return res.status(404).json({ error: 'Pet not found' });
@@ -125,7 +124,7 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
       id: Date.now().toString(),
       ...req.body,
       status: 'available',
-      dateAdded: new Date().toISOString()
+      dateAdded: new Date().toISOString(),
     };
 
     pets.push(newPet);
@@ -142,7 +141,7 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
 router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const pets = await readDB('pets.json');
-    const index = pets.findIndex(p => p.id === req.params.id);
+    const index = pets.findIndex((p) => p.id === req.params.id);
 
     if (index === -1) {
       return res.status(404).json({ error: 'Pet not found' });
@@ -152,7 +151,7 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
       ...pets[index],
       ...req.body,
       id: req.params.id,
-      dateAdded: pets[index].dateAdded
+      dateAdded: pets[index].dateAdded,
     };
 
     await writeDB('pets.json', pets);
@@ -167,7 +166,7 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
 router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const pets = await readDB('pets.json');
-    const filteredPets = pets.filter(p => p.id !== req.params.id);
+    const filteredPets = pets.filter((p) => p.id !== req.params.id);
 
     if (pets.length === filteredPets.length) {
       return res.status(404).json({ error: 'Pet not found' });

@@ -24,7 +24,7 @@ export function generateUserData(overrides = {}) {
     email: generateUniqueEmail(),
     phone: '555-1234',
     password: 'TestPass123!',
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -58,7 +58,7 @@ export function generateApplicationData(overrides = {}) {
     financiallyPrepared: true,
     signature: 'Test Applicant',
     agreedToTerms: true,
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -67,7 +67,7 @@ export function generateApplicationData(overrides = {}) {
  */
 export async function waitForAPIResponse(page, urlPattern, callback) {
   const responsePromise = page.waitForResponse(
-    response => response.url().includes(urlPattern) && response.status() === 200
+    (response) => response.url().includes(urlPattern) && response.status() === 200
   );
 
   await callback();
@@ -92,6 +92,6 @@ export async function resetDatabase(request) {
 export async function takeScreenshot(page, name) {
   await page.screenshot({
     path: `screenshots/${name}-${Date.now()}.png`,
-    fullPage: true
+    fullPage: true,
   });
 }

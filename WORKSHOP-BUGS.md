@@ -14,14 +14,14 @@ This document contains intentional bugs you can introduce to the application for
 ```javascript
 // Current (correct):
 if (age < 18) {
-  alert("You must be 18 or older to adopt");
+  alert('You must be 18 or older to adopt');
   return false;
 }
 
 // Change to (bug):
 if (age < 16) {
   // Wrong age requirement!
-  alert("You must be 18 or older to adopt");
+  alert('You must be 18 or older to adopt');
   return false;
 }
 ```
@@ -46,7 +46,7 @@ if (species) {
 }
 
 // Change to (bug):
-if (species && species !== "any") {
+if (species && species !== 'any') {
   // 'any' filter doesn't work!
   pets = pets.filter((pet) => pet.species === species);
 }
@@ -67,10 +67,10 @@ if (species && species !== "any") {
 
 ```javascript
 // Current (correct):
-alert("Application submitted successfully!");
+alert('Application submitted successfully!');
 
 // Change to (bug):
-alert("Application submited successfully!"); // Typo!
+alert('Application submited successfully!'); // Typo!
 ```
 
 **Expected Behavior:** "submitted" spelled correctly
@@ -115,13 +115,13 @@ if (quizAnswers.activityLevel === pet.activityLevel) {
 
 ```javascript
 // Current (correct):
-if (sortBy === "age") {
+if (sortBy === 'age') {
   aVal = parseInt(a[sortBy]);
   bVal = parseInt(b[sortBy]);
 }
 
 // Change to (bug):
-if (sortBy === "age") {
+if (sortBy === 'age') {
   aVal = a[sortBy]; // String comparison instead of number!
   bVal = b[sortBy];
 }
@@ -167,24 +167,20 @@ const endIndex = startIndex + parseInt(limit) - 1; // Off by one!
 
 ```javascript
 // Current (correct): Check is synchronous
-const existing = favorites.find(
-  (fav) => fav.userId === req.user.id && fav.petId === petId
-);
+const existing = favorites.find((fav) => fav.userId === req.user.id && fav.petId === petId);
 
 if (existing) {
-  return res.status(400).json({ error: "Pet already in favorites" });
+  return res.status(400).json({ error: 'Pet already in favorites' });
 }
 
 // Add delay to introduce race condition (bug):
-const existing = favorites.find(
-  (fav) => fav.userId === req.user.id && fav.petId === petId
-);
+const existing = favorites.find((fav) => fav.userId === req.user.id && fav.petId === petId);
 
 // Simulate processing delay
 await new Promise((resolve) => setTimeout(resolve, 100));
 
 if (existing) {
-  return res.status(400).json({ error: "Pet already in favorites" });
+  return res.status(400).json({ error: 'Pet already in favorites' });
 }
 ```
 
@@ -206,7 +202,7 @@ if (existing) {
 const filteredFavorites = favorites.filter(
   (fav) => !(fav.userId === req.user.id && fav.petId === petId)
 );
-await writeDB("favorites.json", filteredFavorites);
+await writeDB('favorites.json', filteredFavorites);
 
 // Change to (bug): Doesn't actually remove, just hides
 const filteredFavorites = favorites.filter(
@@ -231,21 +227,21 @@ const filteredFavorites = favorites.filter(
 
 ```javascript
 // Current (correct):
-if (status === "approved") {
-  const pets = await readDB("pets.json");
+if (status === 'approved') {
+  const pets = await readDB('pets.json');
   const petIndex = pets.findIndex((p) => p.id === applications[index].petId);
   if (petIndex !== -1) {
-    pets[petIndex].status = "pending";
-    await writeDB("pets.json", pets);
+    pets[petIndex].status = 'pending';
+    await writeDB('pets.json', pets);
   }
 }
 
 // Change to (bug):
-if (status === "approved") {
-  const pets = await readDB("pets.json");
+if (status === 'approved') {
+  const pets = await readDB('pets.json');
   const petIndex = pets.findIndex((p) => p.id === applications[index].petId);
   if (petIndex !== -1) {
-    pets[petIndex].status = "pending";
+    pets[petIndex].status = 'pending';
     // Don't save! Pet stays available
     // await writeDB('pets.json', pets);
   }

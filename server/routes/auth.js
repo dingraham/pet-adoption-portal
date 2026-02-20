@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
     const users = await readDB('users.json');
 
     // Check if user exists
-    if (users.find(u => u.email === email)) {
+    if (users.find((u) => u.email === email)) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
@@ -44,7 +44,7 @@ router.post('/register', async (req, res) => {
       lastName,
       phone: phone || '',
       role: 'user',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     users.push(newUser);
@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
     }
 
     const users = await readDB('users.json');
-    const user = users.find(u => u.email === email);
+    const user = users.find((u) => u.email === email);
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -115,7 +115,7 @@ router.get('/me', async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const users = await readDB('users.json');
-    const user = users.find(u => u.id === decoded.id);
+    const user = users.find((u) => u.id === decoded.id);
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });

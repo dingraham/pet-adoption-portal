@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/my-applications', authenticateToken, async (req, res) => {
   try {
     const applications = await readDB('applications.json');
-    const userApplications = applications.filter(app => app.userId === req.user.id);
+    const userApplications = applications.filter((app) => app.userId === req.user.id);
 
     res.json(userApplications);
   } catch (error) {
@@ -25,7 +25,7 @@ router.get('/', authenticateToken, requireAdmin, async (req, res) => {
 
     let filtered = applications;
     if (status) {
-      filtered = applications.filter(app => app.status === status);
+      filtered = applications.filter((app) => app.status === status);
     }
 
     res.json(filtered);
@@ -39,7 +39,7 @@ router.get('/', authenticateToken, requireAdmin, async (req, res) => {
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const applications = await readDB('applications.json');
-    const application = applications.find(app => app.id === req.params.id);
+    const application = applications.find((app) => app.id === req.params.id);
 
     if (!application) {
       return res.status(404).json({ error: 'Application not found' });
@@ -84,13 +84,17 @@ router.post('/', authenticateToken, async (req, res) => {
     }
 
     if (age < 18) {
-      return res.status(400).json({ error: 'You must be at least 18 years old to submit an application' });
+      return res
+        .status(400)
+        .json({ error: 'You must be at least 18 years old to submit an application' });
     }
 
     // Check if user already has a pending application for this pet
     const existingApp = applications.find(
-      app => app.userId === req.user.id && app.petId === petId &&
-      (app.status === 'pending' || app.status === 'under_review' || app.status === 'approved')
+      (app) =>
+        app.userId === req.user.id &&
+        app.petId === petId &&
+        (app.status === 'pending' || app.status === 'under_review' || app.status === 'approved')
     );
 
     if (existingApp) {
@@ -103,7 +107,7 @@ router.post('/', authenticateToken, async (req, res) => {
       petId,
       status: 'pending',
       submittedAt: new Date().toISOString(),
-      ...req.body
+      ...req.body,
     };
 
     applications.push(newApplication);
@@ -121,7 +125,7 @@ router.patch('/:id/status', authenticateToken, requireAdmin, async (req, res) =>
   try {
     const { status, notes } = req.body;
     const applications = await readDB('applications.json');
-    const index = applications.findIndex(app => app.id === req.params.id);
+    const index = applications.findIndex((app) => app.id === req.params.id);
 
     if (index === -1) {
       return res.status(404).json({ error: 'Application not found' });
@@ -136,7 +140,7 @@ router.patch('/:id/status', authenticateToken, requireAdmin, async (req, res) =>
     // If approved, update pet status to pending
     if (status === 'approved') {
       const pets = await readDB('pets.json');
-      const petIndex = pets.findIndex(p => p.id === applications[index].petId);
+      const petIndex = pets.findIndex((p) => p.id === applications[index].petId);
       if (petIndex !== -1) {
         pets[petIndex].status = 'pending';
         await writeDB('pets.json', pets);
