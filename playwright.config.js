@@ -39,8 +39,8 @@ export default defineConfig({
     // Base URL for tests - all page.goto('/path') will use this
     baseURL: 'http://localhost:5173',
 
-    // Collect trace - always on in CI for artifact debugging
-    trace: process.env.CI ? 'on' : 'on-first-retry',
+    // Collect trace - only retain on failure to avoid clutter in CI artifacts
+    trace: 'retain-on-failure',
 
     // Screenshot - only on failure to avoid clutter in CI artifacts
     screenshot: 'only-on-failure',
