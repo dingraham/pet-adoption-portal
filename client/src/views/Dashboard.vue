@@ -18,9 +18,9 @@ const fetchFavorites = async () => {
     favorites.value = favResponse.data;
 
     // Fetch pet details for each favorite
-    const petPromises = favorites.value.map(id => petsAPI.getById(id));
+    const petPromises = favorites.value.map((id) => petsAPI.getById(id));
     const pets = await Promise.all(petPromises);
-    favoritePets.value = pets.map(p => p.data);
+    favoritePets.value = pets.map((p) => p.data);
   } catch (err) {
     console.error('Failed to load favorites');
   }
@@ -59,8 +59,8 @@ const fetchAppointments = async () => {
 const removeFavorite = async (petId) => {
   try {
     await favoritesAPI.remove(petId);
-    favoritePets.value = favoritePets.value.filter(p => p.id !== petId);
-    favorites.value = favorites.value.filter(id => id !== petId);
+    favoritePets.value = favoritePets.value.filter((p) => p.id !== petId);
+    favorites.value = favorites.value.filter((id) => id !== petId);
   } catch (err) {
     console.error('Failed to remove favorite');
   }
@@ -71,7 +71,7 @@ const cancelAppointment = async (appointmentId) => {
 
   try {
     await appointmentsAPI.cancel(appointmentId);
-    const apt = appointments.value.find(a => a.id === appointmentId);
+    const apt = appointments.value.find((a) => a.id === appointmentId);
     if (apt) apt.status = 'cancelled';
   } catch (err) {
     console.error('Failed to cancel appointment');
@@ -85,7 +85,7 @@ const getStatusColor = (status) => {
     approved: 'bg-green-100 text-green-800',
     rejected: 'bg-red-100 text-red-800',
     scheduled: 'bg-blue-100 text-blue-800',
-    cancelled: 'bg-gray-100 text-gray-800'
+    cancelled: 'bg-gray-100 text-gray-800',
   };
   return colors[status] || 'bg-gray-100 text-gray-800';
 };
@@ -109,7 +109,7 @@ onMounted(async () => {
             'py-4 px-1 border-b-2 font-medium text-sm',
             activeTab === 'favorites'
               ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
           ]"
         >
           Favorites ({{ favoritePets.length }})
@@ -120,7 +120,7 @@ onMounted(async () => {
             'py-4 px-1 border-b-2 font-medium text-sm',
             activeTab === 'applications'
               ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
           ]"
         >
           Applications ({{ applications.length }})
@@ -131,7 +131,7 @@ onMounted(async () => {
             'py-4 px-1 border-b-2 font-medium text-sm',
             activeTab === 'appointments'
               ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
           ]"
         >
           Appointments ({{ appointments.length }})
@@ -148,10 +148,7 @@ onMounted(async () => {
     <div v-else-if="activeTab === 'favorites'">
       <div v-if="favoritePets.length === 0" class="text-center py-12">
         <p class="text-xl text-gray-600 mb-4">You haven't favorited any pets yet.</p>
-        <button
-          @click="router.push('/pets')"
-          class="text-indigo-600 hover:underline"
-        >
+        <button @click="router.push('/pets')" class="text-indigo-600 hover:underline">
           Browse available pets
         </button>
       </div>
@@ -197,11 +194,7 @@ onMounted(async () => {
       </div>
 
       <div v-else class="space-y-4">
-        <div
-          v-for="app in applications"
-          :key="app.id"
-          class="bg-white rounded-lg shadow p-6"
-        >
+        <div v-for="app in applications" :key="app.id" class="bg-white rounded-lg shadow p-6">
           <div class="flex justify-between items-start mb-4">
             <div class="flex items-center space-x-4">
               <img
@@ -219,7 +212,10 @@ onMounted(async () => {
               </div>
             </div>
             <span
-              :class="['px-3 py-1 rounded-full text-sm font-medium capitalize', getStatusColor(app.status)]"
+              :class="[
+                'px-3 py-1 rounded-full text-sm font-medium capitalize',
+                getStatusColor(app.status),
+              ]"
             >
               {{ app.status.replace('_', ' ') }}
             </span>
@@ -240,11 +236,7 @@ onMounted(async () => {
       </div>
 
       <div v-else class="space-y-4">
-        <div
-          v-for="apt in appointments"
-          :key="apt.id"
-          class="bg-white rounded-lg shadow p-6"
-        >
+        <div v-for="apt in appointments" :key="apt.id" class="bg-white rounded-lg shadow p-6">
           <div class="flex justify-between items-start">
             <div class="flex items-center space-x-4">
               <img
@@ -259,14 +251,15 @@ onMounted(async () => {
                   📅 {{ new Date(apt.date).toLocaleDateString() }} at {{ apt.time }}
                 </p>
                 <p class="text-gray-600">📍 {{ apt.pet?.location }}</p>
-                <p v-if="apt.notes" class="text-sm text-gray-500 mt-1">
-                  Note: {{ apt.notes }}
-                </p>
+                <p v-if="apt.notes" class="text-sm text-gray-500 mt-1">Note: {{ apt.notes }}</p>
               </div>
             </div>
             <div class="flex flex-col items-end space-y-2">
               <span
-                :class="['px-3 py-1 rounded-full text-sm font-medium capitalize', getStatusColor(apt.status)]"
+                :class="[
+                  'px-3 py-1 rounded-full text-sm font-medium capitalize',
+                  getStatusColor(apt.status),
+                ]"
               >
                 {{ apt.status }}
               </span>

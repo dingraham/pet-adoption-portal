@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -55,8 +52,8 @@ export default {
         serif: ['Lora', 'Georgia', 'serif'],
       },
       boxShadow: {
-        'soft': '0 2px 8px rgba(0, 0, 0, 0.1)',
-        'card': '0 4px 12px rgba(0, 0, 0, 0.08)',
+        soft: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        card: '0 4px 12px rgba(0, 0, 0, 0.08)',
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(135deg, #2ea3f2 0%, #1890ff 100%)',
@@ -65,4 +62,4 @@ export default {
     },
   },
   plugins: [],
-}
+};
