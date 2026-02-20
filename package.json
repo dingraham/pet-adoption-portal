@@ -14,6 +14,7 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
+    "test:trace": "playwright test --trace on",
     "test:codegen": "playwright codegen http://localhost:5173",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
