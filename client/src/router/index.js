@@ -5,51 +5,51 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue')
+    component: () => import('../views/Home.vue'),
   },
   {
     path: '/pets',
     name: 'Pets',
-    component: () => import('../views/Pets.vue')
+    component: () => import('../views/Pets.vue'),
   },
   {
     path: '/pets/:id',
     name: 'PetDetail',
-    component: () => import('../views/PetDetail.vue')
+    component: () => import('../views/PetDetail.vue'),
   },
   {
     path: '/quiz',
     name: 'Quiz',
-    component: () => import('../views/Quiz.vue')
+    component: () => import('../views/Quiz.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/Register.vue')
+    component: () => import('../views/Register.vue'),
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('../views/Dashboard.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: '/apply/:petId',
     name: 'Apply',
     component: () => import('../views/Apply.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin',
     name: 'Admin',
     component: () => import('../views/Admin.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
-  }
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
 ];
 
 const router = createRouter({
@@ -60,7 +60,7 @@ const router = createRouter({
       return savedPosition;
     }
     return { top: 0 };
-  }
+  },
 });
 
 router.beforeEach(async (to, from, next) => {

@@ -14,7 +14,10 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
-    "test:codegen": "playwright codegen http://localhost:5173"
+    "test:trace": "playwright test --trace on",
+    "test:codegen": "playwright codegen http://localhost:5173",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "pet-adoption",
@@ -25,6 +28,7 @@
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "prettier": "^3.8.1"
   }
 }

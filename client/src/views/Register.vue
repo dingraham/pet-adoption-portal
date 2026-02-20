@@ -12,7 +12,7 @@ const form = ref({
   email: '',
   phone: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
 });
 
 const error = ref('');
@@ -49,16 +49,18 @@ const handleSubmit = async () => {
     <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
       <h2 class="text-3xl font-bold text-center mb-6">Create Account</h2>
 
-      <div v-if="error" data-testid="register-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div
+        v-if="error"
+        data-testid="register-error"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+      >
         {{ error }}
       </div>
 
       <form @submit.prevent="handleSubmit" class="space-y-4" data-testid="register-form">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              First Name
-            </label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"> First Name </label>
             <input
               v-model="form.firstName"
               type="text"
@@ -68,9 +70,7 @@ const handleSubmit = async () => {
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Last Name
-            </label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"> Last Name </label>
             <input
               v-model="form.lastName"
               type="text"
@@ -82,9 +82,7 @@ const handleSubmit = async () => {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> Email </label>
           <input
             v-model="form.email"
             type="email"
@@ -95,9 +93,7 @@ const handleSubmit = async () => {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Phone
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> Phone </label>
           <input
             v-model="form.phone"
             type="tel"
@@ -107,9 +103,7 @@ const handleSubmit = async () => {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Password
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> Password </label>
           <input
             v-model="form.password"
             type="password"
@@ -120,9 +114,7 @@ const handleSubmit = async () => {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Confirm Password
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> Confirm Password </label>
           <input
             v-model="form.confirmPassword"
             type="password"
@@ -144,9 +136,7 @@ const handleSubmit = async () => {
 
       <p class="text-center mt-4 text-gray-600">
         Already have an account?
-        <RouterLink to="/login" class="text-indigo-600 hover:underline">
-          Login here
-        </RouterLink>
+        <RouterLink to="/login" class="text-indigo-600 hover:underline"> Login here </RouterLink>
       </p>
     </div>
   </div>
