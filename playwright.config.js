@@ -42,11 +42,11 @@ export default defineConfig({
     // Collect trace - always on in CI for artifact debugging
     trace: process.env.CI ? 'on' : 'on-first-retry',
 
-    // Screenshot - always capture in CI for artifact debugging
-    screenshot: process.env.CI ? 'on' : 'only-on-failure',
+    // Screenshot - only on failure to avoid clutter in CI artifacts
+    screenshot: 'only-on-failure',
 
-    // Video - always record in CI for artifact debugging
-    video: process.env.CI ? 'on' : 'retain-on-failure',
+    // Video - only retain on failure to avoid clutter in CI artifacts
+    video: 'retain-on-failure',
 
     // Maximum time for actions like click, fill, etc.
     actionTimeout: 10000,
