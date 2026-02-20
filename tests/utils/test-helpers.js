@@ -76,17 +76,6 @@ export async function waitForAPIResponse(page, urlPattern, callback) {
 }
 
 /**
- * Reset database to seed state
- * Useful for test isolation
- */
-export async function resetDatabase(request) {
-  // This would call a test-only endpoint to reset the database
-  // You'd need to add this endpoint to your server for testing
-  // For now, this is a placeholder
-  console.log('Database reset would happen here');
-}
-
-/**
  * Take a screenshot with a descriptive name
  */
 export async function takeScreenshot(page, name) {
