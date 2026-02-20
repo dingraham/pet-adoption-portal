@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/auth.fixture.js';
 
 test.describe('Adoption Application Flow', () => {
-  test('should progress through adoption form steps', async ({ userPage }) => {
+  test('should fill out the adotion form steps', async ({ userPage }) => {
     // Navigate to pets page and select the first available pet
     await userPage.goto('/pets');
     await userPage.locator('[data-testid^="pet-card-"]').first().click();
@@ -33,5 +33,7 @@ test.describe('Adoption Application Flow', () => {
     // Verify Step 2 loaded
     await expect(userPage.getByText('Step 2 of 5')).toBeVisible();
     await expect(userPage.locator('.step-heading')).toContainText('Living Arrangements');
+
+    // Can add additional steps after ...
   });
 });
