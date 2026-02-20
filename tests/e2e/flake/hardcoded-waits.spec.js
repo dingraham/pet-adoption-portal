@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/auth.fixture.js';
+import { test, expect } from "../../fixtures/auth.fixture.js";
 
 /**
  * FLAKE TRIGGER: Hardcoded Timeout Instead of Proper Wait
@@ -10,15 +10,14 @@ import { test, expect } from '../../fixtures/auth.fixture.js';
  * Run with: npx playwright test hardcoded-waits --repeat-each=10
  */
 
-test.describe('User Login and Dashboard', () => {
-
-  test('should display user dashboard after login', async ({ page }) => {
-    await page.goto('/login');
+test.describe("User Login and Dashboard", () => {
+  test("should display user dashboard after login", async ({ page }) => {
+    await page.goto("/login");
 
     // Fill in login credentials
-    await page.getByTestId('login-email').fill('user@petadoption.com');
-    await page.getByTestId('login-password').fill('user123');
-    await page.getByTestId('login-submit').click();
+    await page.getByTestId("login-email").fill("user@petadoption.com");
+    await page.getByTestId("login-password").fill("user123");
+    await page.getByTestId("login-submit").click();
 
     // BUG: Using a hardcoded wait instead of waiting for navigation.
     // 300ms might be enough locally but not on a slow CI runner.
@@ -28,7 +27,6 @@ test.describe('User Login and Dashboard', () => {
     await expect(page).toHaveURL(/dashboard/);
 
     // Verify dashboard content is visible
-    await expect(page.getByText('My Favorites')).toBeVisible();
+    await expect(page.getByText("My Favorites")).toBeVisible();
   });
-
 });
