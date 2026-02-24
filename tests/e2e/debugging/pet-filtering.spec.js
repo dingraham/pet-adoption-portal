@@ -11,7 +11,7 @@ test.describe('Pet Species Filtering', () => {
     const responsePromise = page.waitForResponse(
       (resp) => resp.url().includes('/api/pets') && resp.url().includes('species=dog')
     );
-    await page.getByTestId('filter-species').selectOption('dog');
+    await page.getByTestId('filter-species').selectOption('Dogs');
     const response = await responsePromise;
     const data = await response.json();
 
@@ -20,7 +20,7 @@ test.describe('Pet Species Filtering', () => {
 
     // Every returned pet should be a dog
     for (const pet of data.pets) {
-      expect(pet.species).toBe('dog');
+      await expect(pet.species).toBe('dog');
     }
 
     // Verify the UI count matches the API response

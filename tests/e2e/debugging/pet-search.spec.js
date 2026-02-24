@@ -23,5 +23,8 @@ test.describe('Pet Search', () => {
     expect(data.pets.length).toBeGreaterThan(0);
     const petNames = data.pets.map((pet) => pet.name);
     expect(petNames).toContain('Luna');
+
+    // Validate first dog card displays Luna's name
+    await expect(page.getByTestId('pet-name-1')).toHaveText(data.pets[0].name);
   });
 });
