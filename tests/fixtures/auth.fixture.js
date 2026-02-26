@@ -61,24 +61,32 @@ export const test = base.extend({
    */
   apiContext: async ({ request }, use) => {
     // Login via API to get token
-    const response = await request.post('http://localhost:3000/api/auth/login', {
+    const loginResponse = await request.post('http://localhost:3000/api/auth/login', {
       data: {
         email: 'user@petadoption.com',
         password: 'user123',
       },
     });
+    const { token } = await loginResponse.json();
 
-    const { token } = await response.json();
+    // Return a thin wrapper that injects the auth header on every call
+    const api = {
+      get: (path) =>
+        request.get(`http://localhost:3000/api${path}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      post: (path, options = {}) =>
+        request.post(`http://localhost:3000/api${path}`, {
+          ...options,
+          headers: { Authorization: `Bearer ${token}`, ...options.headers },
+        }),
+      delete: (path) =>
+        request.delete(`http://localhost:3000/api${path}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+    };
 
-    // Create a new context with auth header
-    const context = await request.newContext({
-      baseURL: 'http://localhost:3000/api',
-      extraHTTPHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    await use(context);
+    await use(api);
   },
 });
 
