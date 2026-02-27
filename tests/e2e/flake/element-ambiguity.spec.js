@@ -11,7 +11,11 @@ test.describe('Pet Browsing with Ambiguous Selectors', () => {
   });
 
   test('should read the name of the first pet', async ({ userPage }) => {
-    const petName = await userPage.getByRole('heading', { level: 3 }).textContent();
+    const petName = await userPage
+      .locator('[data-testid^="pet-card-"]')
+      .first()
+      .getByRole('heading')
+      .textContent();
     expect(petName).toBeTruthy();
   });
 
@@ -21,7 +25,7 @@ test.describe('Pet Browsing with Ambiguous Selectors', () => {
       (resp) => resp.url().includes('/api/pets/') && resp.status() === 200
     );
 
-    await userPage.getByRole('button').first().click();
+    await userPage.getByTestId('start-application-button').click();
     await expect(userPage).toHaveURL(/\/apply\//);
   });
 });

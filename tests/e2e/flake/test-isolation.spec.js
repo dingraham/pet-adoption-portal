@@ -1,8 +1,16 @@
 import { test, expect } from '../../fixtures/auth.fixture.js';
 
-// Run with: npx playwright test test-isolation --repeat-each=5
+// Run with: npx playwright test test-isolation --workers=1 --repeat-each=5
 
 test.describe('Favorites Feature', () => {
+  test.beforeEach(async ({ apiContext }) => {
+    const response = await apiContext.get('/favorites');
+    const petIds = await response.json();
+    for (const petId of petIds) {
+      await apiContext.delete(`/favorites/${petId}`);
+    }
+  });
+
   test('should add a pet to favorites', async ({ userPage }) => {
     await userPage.goto('/pets');
     await userPage.waitForResponse(
