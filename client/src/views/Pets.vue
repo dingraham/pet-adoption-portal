@@ -82,13 +82,13 @@ const applyFilters = () => {
 
 const resetFilters = () => {
   filters.value = {
+    sortBy: 'dateAdded',
+    sortOrder: 'desc',
     species: '',
     age: '',
     size: '',
     gender: '',
     search: '',
-    sortBy: 'dateAdded',
-    sortOrder: 'desc',
   };
   fetchPets();
 };
