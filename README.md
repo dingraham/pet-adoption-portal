@@ -41,12 +41,17 @@ A full-stack web application designed for **automation testing workshops**. Prov
 # 1. Install dependencies
 npm run install:all
 
-# 2. Seed the database
+# 2. Set up environment variables
+cp server/.env.example server/.env
+
+# 3. Seed the database
 cd server && node utils/seed.js && cd ..
 
-# 3. Start the app
+# 4. Start the app
 npm run dev
 ```
+
+> **Note:** Step 2 is required for authentication to work. The seed script will also auto-create the `.env` file if it's missing, but it's good practice to set it up explicitly.
 
 **URLs:**
 
