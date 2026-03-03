@@ -2,21 +2,21 @@
   {
     "id": "1",
     "email": "admin@petadoption.com",
-    "password": "$2b$10$IEERRFnV11uUEqhvqVrLEeIPGNtVT2jnBk3UL8SkX9Gf7lUb9qBw.",
+    "password": "$2b$10$FnR92k/LiFRL0RAgurbKJOCtqV6tSZTnYf9TPz7W46dAnbSfV5oXK",
     "firstName": "Admin",
     "lastName": "User",
     "phone": "555-0100",
     "role": "admin",
-    "createdAt": "2026-02-15T18:01:36.553Z"
+    "createdAt": "2026-03-03T16:37:35.283Z"
   },
   {
     "id": "2",
     "email": "user@petadoption.com",
-    "password": "$2b$10$HmCaQC8TSkhe8Yz.0tOsfumzxrEVILGeUu/6mVMTjBXWXK2FkTMiG",
+    "password": "$2b$10$bBm30AXR58LXIet8emDyhuIKiH8oLSYe07qOe/ymQSWLq2tgSIJAG",
     "firstName": "Demo",
     "lastName": "User",
     "phone": "555-0200",
     "role": "user",
-    "createdAt": "2026-02-15T18:01:36.554Z"
+    "createdAt": "2026-03-03T16:37:35.284Z"
   }
 ]
