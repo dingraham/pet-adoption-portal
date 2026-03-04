@@ -12,11 +12,12 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug --tes",
+    "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
     "test:trace": "playwright test --trace on",
     "test:codegen": "playwright codegen http://localhost:5173",
     "format": "prettier --write .",
+    "seed": "cd server && node utils/seed.js",
     "format:check": "prettier --check ."
   },
   "keywords": [
