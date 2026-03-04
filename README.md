@@ -45,7 +45,7 @@ npm run install:all
 cp server/.env.example server/.env
 
 # 3. Seed the database
-cd server && node utils/seed.js && cd ..
+npm run seed
 
 # 4. Start the app
 npm run dev
@@ -83,7 +83,7 @@ npm run test:report  # View HTML report
 ## Reset Data
 
 ```bash
-cd server && node utils/seed.js
+npm run seed
 ```
 
 ## License
