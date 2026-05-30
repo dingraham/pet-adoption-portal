@@ -6,7 +6,9 @@ import { test, expect } from '@playwright/test';
  * This file demonstrates common Playwright patterns.
  * Read through the comments to understand how each feature works.
  *
- * DO NOT RUN THIS FILE YET - It's for learning purposes only!
+ * These examples ARE runnable and pass against the seeded app - they run as
+ * part of `npm test` and in CI, so you can watch them go green. Read the
+ * comments first, then run them to see each pattern in action.
  */
 
 // ============================================================================
