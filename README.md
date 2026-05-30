@@ -35,7 +35,7 @@ A full-stack web application designed for **automation testing workshops**. Prov
 
 ## Quick Start
 
-**Prerequisites:** Node.js v14+
+**Prerequisites:** Node.js v18+ (required by Playwright; CI uses Node 20)
 
 ```bash
 # 1. Install dependencies
@@ -77,7 +77,7 @@ npm run test:report  # View HTML report
 
 **Documentation:**
 
-- [Playwright Guide](./PLAYWRIGHT-GUIDE.md) - Complete testing guide
+- [Playwright Guide](./tests/PLAYWRIGHT-GUIDE.md) - Complete testing guide
 - [Cheat Sheet](./tests/CHEATSHEET.md) - Quick reference
 
 ## Reset Data
