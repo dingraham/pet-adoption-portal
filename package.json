@@ -17,6 +17,7 @@
     "test:trace": "playwright test --trace on",
     "test:codegen": "playwright codegen http://localhost:5173",
     "format": "prettier --write .",
+    "seed": "cd server && node utils/seed.js",
     "format:check": "prettier --check ."
   },
   "keywords": [
