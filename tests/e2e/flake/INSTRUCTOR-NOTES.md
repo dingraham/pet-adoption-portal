@@ -3,16 +3,22 @@
 Each exercise lives in `exercise/flake` (broken) with a stable answer in `solutions/flake`.
 Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `test-isolation`) to observe the intermittent failures.
 
-> **Read this first — the most important lesson in this suite.**
-> The dominant, genuinely *intermittent* flake across these specs is **`waitForResponse`
-> registered _after_ the action that triggers the response** (a `goto` or a `click`). The
-> response can fire and be missed before the listener attaches, so the wait times out
-> (~10s) and the test fails — only sometimes, depending on machine/server speed. This single
-> pattern appears in four of the specs (see the table at the bottom). Several of the
-> *labeled* causes below (e.g. "read the count before the refetch", "ambiguous selector")
-> turn out **not** to flake on this app — the UI settles too fast — so the real teaching
-> moment is: **the flake often isn't where the test's name points. Verify the cause by
-> running `--repeat-each` and reading the actual failure, don't assume.**
+> **Read this first — two mechanisms drive the flakes here.**
+>
+> 1. **Simulated backend latency.** The flake branches run the server with `SIMULATE_LATENCY=300`
+>    (wired into `playwright.config.js`'s `webServer`; the hook itself lives in
+>    `server/routes/pets.js` and is dormant everywhere else). `GET /api/pets` then takes a random
+>    0–300 ms, so a test that reads or acts on filtered data **without waiting for the response**
+>    genuinely races it. This is what makes `race-condition` flake for its *labeled* reason — the
+>    local app is otherwise too fast to race. **The answers must stay green under this latency**,
+>    and they do, because they wait properly.
+> 2. **`waitForResponse` registered _after_ the action** (a `goto` or a `click`). The response can
+>    fire and be missed before the listener attaches, so the wait times out (~10s) and the test
+>    fails — only sometimes. This appears across the specs (see the table at the bottom).
+>
+> Teaching moment: **verify the cause by running `--repeat-each` and reading the actual failure —
+> the flake isn't always where the test's name points.** And note `element-ambiguity`'s two bugs
+> are *deterministic*, not flaky (see its section).
 
 ---
 
@@ -20,24 +26,22 @@ Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `test-isolatio
 
 **Labeled category:** Missing network wait + non-retrying assertions
 
-**What actually flakes (verified):** The `beforeEach` does `page.goto('/pets')` and *then*
-`page.waitForResponse('/api/pets')`. The initial `/api/pets` call often fires during
-navigation, before the listener attaches, so the wait times out and the test fails in
-setup. Measured ~20–25% failure as written; with the `beforeEach` fixed it is **100%
-stable** even with the original in-test reads untouched.
+**What flakes (verified under `SIMULATE_LATENCY=300`):** Both tests read filtered results
+immediately after `selectOption` without awaiting the refetch. Because the backend now returns
+in a random 0–300 ms, the read genuinely races the response — "show fewer results" fails ~90% of
+runs, "show only cats" ~20% (different sensitivities). **This is the labeled lesson, and it is now
+real.** (Without the latency the local app re-renders too fast for this read to flake — which is
+exactly why the latency was added.)
 
-**The in-test "red herring":** Both tests read `pet-count` / breed text immediately after
-`selectOption` without awaiting the filtered response. This is poor practice and the
-answer fixes it — but on this app the UI re-renders fast enough that this read does **not**
-actually flake. Teach it as "good practice we also tightened," not as the cause.
+**Secondary issue:** the `beforeEach` also does `goto` → `waitForResponse`, the listener race
+shared with the other specs. The answer fixes both.
 
-**The fix (answer key):**
-1. **`beforeEach`:** replace the `waitForResponse` with a web-first wait —
-   `await expect(page.getByTestId('pets-grid')).toBeVisible()`. This is what removes the flake.
-2. Still register `const responsePromise = page.waitForResponse(...)` *before* `selectOption`
-   and `await` it after — correct ordering, and it makes the data-layer assertions reliable.
-3. Use auto-retrying assertions (`not.toHaveText(initialCount)`, `toHaveCount(pets.length)`)
-   and the API response body as the source of truth rather than hardcoded names.
+**The fix (answer key) — verified 100% stable under the same latency:**
+1. Register `const responsePromise = page.waitForResponse(...)` *before* `selectOption`, then
+   `await` it — so you read the filtered data, not the stale render.
+2. Use auto-retrying assertions (`not.toHaveText(initialCount)`, `toHaveCount(pets.length)`) and
+   the API response body as the source of truth rather than hardcoded names.
+3. Replace the `beforeEach` `waitForResponse` with `await expect(page.getByTestId('pets-grid')).toBeVisible()`.
 
 ---
 
@@ -117,18 +121,17 @@ order is non-deterministic, so Test B fails whenever Test A ran first — a true
 
 ---
 
-## animation-timing.spec.js — Animations & Transitions (PLANNED — not yet implemented)
+## animation-timing.spec.js — Animations & Transitions (investigated — not viable here)
 
-> ⚠️ **This spec does not exist yet.** It is a planned exercise; there is no
-> `animation-timing.spec.js` on either flake branch. Left here as a design note so the idea
-> isn't lost. Remove this section or implement the spec before relying on it in a session.
-
-**Intended category:** Interacting with elements before they are stable. Candidate seams in
-this app: the `v-if="showFilters"` expanded filter panel and the `v-if="showScheduleModal"`
-"Schedule Meet & Greet" modal (`PetDetail.vue`), both with `transition` classes. A test that
-acts on a child with a short override timeout before the container has finished mounting
-would demonstrate the flake; the fix is to `await expect(container).toBeVisible()` before
-interacting and drop the short timeouts.
+> ⚠️ **Not implemented, and not viable in this app as-is.** Investigated thoroughly: the
+> schedule modal and filter panel are plain `v-if` toggles with **no** Vue `<transition>` or CSS
+> mount animation, and the modal's slot data is pre-fetched — so there is no real "mid-animation"
+> window to race, and Playwright's auto-waiting absorbs what little exists (measured ~0% flake
+> across several attempts). A genuine animation-timing flake would require first adding an actual
+> CSS transition to the app. The broader "timing flake" need is instead met by the
+> `SIMULATE_LATENCY` backend latency (see `race-condition`), which is reliable and
+> machine-independent. Network-mock and date/locale flakes were likewise found to collapse to
+> 0%/100% here — this app is simply too deterministic for them without app changes.
 
 ---
 
@@ -136,7 +139,7 @@ interacting and drop the short timeouts.
 
 | Spec | `waitForResponse`-after-action race? | Other issue |
 | --- | --- | --- |
-| race-condition | ✅ `beforeEach` (the real flake) | non-retrying reads (don't actually flake here) |
+| race-condition | ✅ `beforeEach` | non-retrying reads (now flake for real under `SIMULATE_LATENCY`) |
 | element-ambiguity | ✅ `beforeEach` + Test 2 detail fetch | deterministic locator bugs (not flaky) |
 | spa-navigation | ✅ two post-click `waitForResponse` | short override timeouts |
 | test-isolation | ✅ Test A `goto`→`waitForResponse` | wrong status code; shared DB state |

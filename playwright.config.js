@@ -95,6 +95,10 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       stdout: 'pipe',
       stderr: 'pipe',
+      // Simulate a slow/variable backend so the timing flakes are genuinely
+      // intermittent (the local app is otherwise too fast to race). The answers
+      // here must stay green under this latency.
+      env: { SIMULATE_LATENCY: '300' },
     },
     {
       command: 'cd client && npm run dev',
