@@ -319,7 +319,6 @@ export async function seedDatabase() {
     },
     {
       id: '10',
-      name: 'Oliver',
       species: 'cat',
       breed: 'Maine Coon',
       age: 6,
