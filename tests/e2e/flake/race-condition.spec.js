@@ -5,7 +5,9 @@ import { test, expect } from '@playwright/test';
 test.describe('Pet Filtering Results', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/pets');
-    await page.waitForResponse((resp) => resp.url().includes('/api/pets') && resp.status() === 200);
+    // Web-first wait: auto-retries until the list has rendered. Avoids the
+    // goto/waitForResponse race (the response can fire before the listener attaches).
+    await expect(page.getByTestId('pets-grid')).toBeVisible();
   });
 
   test('should show fewer results after filtering by species', async ({ page }) => {

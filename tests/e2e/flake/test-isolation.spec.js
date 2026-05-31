@@ -13,9 +13,8 @@ test.describe('Favorites Feature', () => {
 
   test('should add a pet to favorites', async ({ userPage }) => {
     await userPage.goto('/pets');
-    await userPage.waitForResponse(
-      (resp) => resp.url().includes('/api/pets') && resp.status() === 200
-    );
+    // Web-first wait instead of a goto/waitForResponse race.
+    await expect(userPage.getByTestId('pets-grid')).toBeVisible();
 
     const firstFavoriteButton = userPage.locator('[data-testid^="favorite-button-"]').first();
     const responsePromise = userPage.waitForResponse(

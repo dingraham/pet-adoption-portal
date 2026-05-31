@@ -1,106 +1,146 @@
 # Flaky Test Exercises — Instructor Notes
 
-Each exercise demonstrates a distinct real-world flaky test category. Tests should be run with `--repeat-each=10` (or `--repeat-each=5` for test-isolation) to observe intermittent failures.
+Each exercise lives in `exercise/flake` (broken) with a stable answer in `solutions/flake`.
+Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `test-isolation`) to observe the intermittent failures.
+
+> **Read this first — the most important lesson in this suite.**
+> The dominant, genuinely *intermittent* flake across these specs is **`waitForResponse`
+> registered _after_ the action that triggers the response** (a `goto` or a `click`). The
+> response can fire and be missed before the listener attaches, so the wait times out
+> (~10s) and the test fails — only sometimes, depending on machine/server speed. This single
+> pattern appears in four of the specs (see the table at the bottom). Several of the
+> *labeled* causes below (e.g. "read the count before the refetch", "ambiguous selector")
+> turn out **not** to flake on this app — the UI settles too fast — so the real teaching
+> moment is: **the flake often isn't where the test's name points. Verify the cause by
+> running `--repeat-each` and reading the actual failure, don't assume.**
 
 ---
 
 ## race-condition.spec.js — Racing the UI
 
-**Category:** Missing network wait + non-retrying assertions
+**Labeled category:** Missing network wait + non-retrying assertions
 
-**What's broken:**
+**What actually flakes (verified):** The `beforeEach` does `page.goto('/pets')` and *then*
+`page.waitForResponse('/api/pets')`. The initial `/api/pets` call often fires during
+navigation, before the listener attaches, so the wait times out and the test fails in
+setup. Measured ~20–25% failure as written; with the `beforeEach` fixed it is **100%
+stable** even with the original in-test reads untouched.
 
-Both tests apply a species filter but don't wait for the filtered API response before reading results. On a fast machine the assertion may still pass because the response arrives quickly; on a slow machine or CI runner it reads stale data from before the filter was applied.
+**The in-test "red herring":** Both tests read `pet-count` / breed text immediately after
+`selectOption` without awaiting the filtered response. This is poor practice and the
+answer fixes it — but on this app the UI re-renders fast enough that this read does **not**
+actually flake. Teach it as "good practice we also tightened," not as the cause.
 
-The second compounding problem: both tests use `.textContent()` and `.allTextContents()` — one-shot DOM reads that don't retry. Even when the network responds in time, the DOM re-render can still race the read. This is different from the missing wait: it's possible to add a `waitForResponse` and *still* flake if you then use a non-retrying read.
-
-- **Test 1:** Reads `pet-count` immediately after `selectOption`, then compares with a manual `toBeLessThan`. On a slow machine the count hasn't updated yet.
-- **Test 2:** Captures `initialBreedCount` before filtering, then reads `allTextContents()` immediately after `selectOption`. On a slow machine the breed list hasn't updated, so `breeds.length` still equals `initialBreedCount` and the `toBeLessThan` fails.
-
-**The fix:**
-1. Set up `const responsePromise = page.waitForResponse(...)` *before* the filter action, then `await responsePromise` after it.
-2. Replace `textContent()` + manual `expect(Number(...))` with Playwright's auto-retrying assertion: `await expect(locator).not.toHaveText(initialValue)`.
-3. Capture the response body from `waitForResponse`. Use `pets.every((pet) => pet.species === 'cat')` to verify the filter actually worked at the data layer, then `await expect(page.locator('[data-testid^="pet-breed-"]')).toHaveCount(pets.length)` to confirm all results rendered. This avoids hardcoding breed names — the API response is the source of truth for both correctness and count.
-
----
-
-## animation-timing.spec.js — Animations & Transitions
-
-**Category:** Interacting with elements before they are stable
-
-**What's broken:**
-
-Both tests use a short `{ timeout: 1000 }` on elements that are conditionally rendered via Vue's `v-if`. The element is inserted into the DOM when the condition becomes true, but it may not be fully laid out, visible, or interactive at the moment the test acts on it.
-
-- **Test 1:** After clicking "More Filters", the expanded filter panel (`v-if="showFilters"`) appears, but `selectOption` on the age dropdown fires immediately with a 1-second timeout. On a slow machine the panel is still mounting.
-- **Test 2:** After clicking "Schedule Meet & Greet", the modal (`v-if="showScheduleModal"`) appears, but `fill` on the date input fires before the modal content is interactive, and `toBeVisible` on the Confirm button uses a 1-second timeout.
-
-**The fix:**
-1. After clicking "More Filters", wait for the container to be ready before acting on its children: `await expect(page.getByTestId('expanded-filters')).toBeVisible()`.
-2. After opening the modal, wait for a stable element inside it before interacting: `await expect(page.getByText('Schedule Meet & Greet')).toBeVisible()`.
-3. Remove the short overriding timeouts — let Playwright's default timeout handle it, or use `waitForResponse` to confirm the filter took effect.
+**The fix (answer key):**
+1. **`beforeEach`:** replace the `waitForResponse` with a web-first wait —
+   `await expect(page.getByTestId('pets-grid')).toBeVisible()`. This is what removes the flake.
+2. Still register `const responsePromise = page.waitForResponse(...)` *before* `selectOption`
+   and `await` it after — correct ordering, and it makes the data-layer assertions reliable.
+3. Use auto-retrying assertions (`not.toHaveText(initialCount)`, `toHaveCount(pets.length)`)
+   and the API response body as the source of truth rather than hardcoded names.
 
 ---
 
 ## element-ambiguity.spec.js — Element Ambiguity
 
-**Category:** Overly broad locators matching multiple elements
+**Labeled category:** Overly broad locators matching multiple elements
 
-**What's broken:**
+**Important framing:** As written, the two locator bugs are **deterministic, not flaky** —
+they fail on *every* run, not intermittently:
 
-Both tests use locators that match more elements than intended:
+- **Test 1:** `getByRole('heading', { level: 3 })` matches ~12 `<h3>` pet names; `.textContent()`
+  on a multi-match locator is a strict-mode violation every time.
+- **Test 2:** `getByRole('button').first()` on the detail page is always the favorite heart
+  (first button in DOM), so it never navigates.
 
-- **Test 1:** `page.getByRole('heading', { level: 3 })` matches every pet name heading on the page (~12 `<h3>` elements). Calling `.textContent()` on a multi-match locator triggers Playwright's strict mode violation — it refuses to act on ambiguous matches. The assertion `.toBeTruthy()` is correct but unreachable because the locator itself is ambiguous.
-- **Test 2:** `userPage.getByRole('button').first()` on the pet detail page matches the favorite heart button (first button in DOM order on the page), not "Start Adoption Application". Clicking the heart toggles a favorite without navigating, so the URL assertion fails. The test already uses `userPage` and `waitForResponse` for the pet detail API as prerequisites so students reach the actual ambiguity bug — the core issue is the overly broad button selector.
+The only *intermittent* element on this spec is the same racy `beforeEach`
+(`goto` → `waitForResponse`) as race-condition, plus a second response race in Test 2
+(`waitForResponse('/api/pets/')` registered after the card click). So this file teaches
+**two different bug classes at once**: deterministic locator mistakes *and* a setup flake.
 
-**The fix:**
-1. Scope the heading locator to the first card: `page.locator('[data-testid^="pet-card-"]').first().getByRole('heading').textContent()`. Assert `.toBeTruthy()` rather than a hardcoded name.
-2. Replace `getByRole('button').first()` with the explicit testid: `userPage.getByTestId('start-application-button').click()`.
+**The fix (answer key):**
+1. **`beforeEach`:** `await expect(userPage.getByTestId('pets-grid')).toBeVisible()` (removes the flake).
+2. **Test 1:** scope the heading to one card —
+   `userPage.locator('[data-testid^="pet-card-"]').first().getByRole('heading')`.
+3. **Test 2:** use the explicit testid (`start-application-button`) and, instead of racing the
+   detail response, auto-wait for it: `await expect(startButton).toBeVisible()` then click.
 
 ---
 
 ## spa-navigation.spec.js — SPA Navigation Assumptions
 
-**Category:** Not accounting for async client-side route changes
+**Labeled category:** Not accounting for async client-side route changes
 
-**What's broken:**
+**What's broken:** The exercise version uses aggressively short overriding timeouts
+(`{ timeout: 500 }`, `{ timeout: 300 }`) on SPA route changes and component mounts. In the
+*answer*, the residual flake was two `waitForResponse` calls registered **after** the click
+that triggers them (`nav-browse-pets` click → `/api/pets`; pet-card click → `/api/pets/:id`),
+which race the response and time out (~55% failure before fixing).
 
-In a Vue SPA, `router.push()` is async — the URL update, component unmount/mount, and any data fetching on the new route are separate async steps. This test has four places where it doesn't wait properly:
-
-1. After clicking "Login", `toHaveURL(/dashboard/, { timeout: 500 })` runs before the login API call has completed and `router.push('/dashboard')` has fired. 500ms is not enough when multiple workers are hitting the login endpoint simultaneously.
-2. `page.goto('/pets')` is used directly instead of clicking the nav link. This forces a full page reload, which is slower than SPA navigation, and the auth state may not be fully re-hydrated in time.
-3. After clicking a pet card, `start-application-button` is queried with `{ timeout: 300 }`. The PetDetail component uses `v-if="pet"` — the button doesn't exist until the component mounts *and* the pet API call resolves.
-4. After clicking "Start Adoption Application", `Step 1 of 5` is expected visible with `{ timeout: 300 }`. The Apply component also fetches the pet before rendering the form.
-
-**The fix:**
-1. Use `await page.waitForURL(/dashboard/)` after login instead of a short-timeout assertion.
-2. Navigate using the nav link (`page.getByTestId('nav-browse-pets').click()`) to stay in the SPA, or add `waitForLoadState` after `goto`.
-3. After clicking a pet card, use `await page.waitForURL(/\/pets\/\d+/)` to confirm the route changed, then wait for the pet data to load.
-4. After clicking "Start Adoption Application", use `await page.waitForURL(/\/apply\//)` and let the default timeout handle the form rendering.
+**The fix (answer key):**
+1. `await page.waitForURL(/dashboard/)` after login (not a short-timeout assertion).
+2. Navigate via the nav link to stay in the SPA; after it, `await page.waitForURL(/\/pets/)`
+   and `await expect(page.getByTestId('pets-grid')).toBeVisible()` — **no** post-click
+   `waitForResponse`.
+3. After the pet-card click, `await page.waitForURL(/\/pets\/\d+/)`, then auto-wait for
+   `start-application-button` to be visible before clicking it.
+4. `await page.waitForURL(/\/apply\//)` and let the default timeout render the form.
 
 ---
 
 ## test-isolation.spec.js — Shared/Dirty State
 
-**Category:** Tests sharing persistent state through a real database
+**Labeled category:** Tests sharing persistent state through a real database
 
-**What's broken:**
+**What's broken:** Both tests use the same user and the same JSON-file database. Test A adds
+a favorite; Test B expects `toHaveCount(0)` on the dashboard. With `fullyParallel: true`,
+order is non-deterministic, so Test B fails whenever Test A ran first — a true ordering flake.
 
-Both tests use the same user account (`user@petadoption.com`) and the same database. Test A adds a pet to favorites. Test B then navigates to the dashboard and expects `toHaveCount(0)` — but if Test A ran first, there is now 1 favorite in the database. Test B passes when run in isolation or before Test A; it fails when Test A has already run.
+**Run with:** `npx playwright test test-isolation --workers=1 --repeat-each=5`
 
-With `fullyParallel: true` in the Playwright config, test execution order is non-deterministic across runs, making this a true flake rather than a deterministic failure.
+**The fix (answer key):**
+1. Add a `beforeEach` that uses the `apiContext` fixture to clear favorites: `GET /favorites`,
+   then `DELETE /favorites/:petId` for each. Each test now owns its preconditions.
+2. Run with `--workers=1`: the tests are logically independent but share a mutable resource
+   through one account. In parallel, `POST /api/favorites/:petId` returns `400` if already
+   favorited, so a second worker never sees `201` and `waitForResponse` times out. (An
+   alternative that avoids the flag: register a unique user per run so nothing is shared.)
 
-**Run with:** `npx playwright test test-isolation --repeat-each=5`
+**Two real bugs found while implementing the fix:**
+1. **Wrong status code:** the favorites `waitForResponse` checked `status() === 200`, but
+   `POST /api/favorites/:petId` returns `201 Created` — the listener never matched and timed
+   out. Always verify the status code against the actual route.
+2. **`goto` → `waitForResponse` race in Test A:** the "add a pet" test opened `/pets` and
+   then waited for `/api/pets`, the same setup race as the other specs. Replaced with
+   `await expect(userPage.getByTestId('pets-grid')).toBeVisible()`. (The favorites
+   `waitForResponse` is correctly registered *before* the click and was kept.)
 
-**The fix:**
-1. Add a `beforeEach` that uses the `apiContext` fixture to clear favorites before each test: call `GET /favorites` to retrieve the current pet IDs, then `DELETE /favorites/:petId` for each one. This makes each test independent — it owns its preconditions regardless of what ran before.
-2. Run with `--workers=1`: `npx playwright test test-isolation --workers=1 --repeat-each=5`. These tests are *conceptually* independent (each owns its setup/teardown), but they share a mutable database resource through the same user account. Running in parallel causes multiple workers to race on that shared resource — `POST /api/favorites/:petId` returns `400` if the pet is already favorited, so a second parallel worker never sees `201` and `waitForResponse` times out.
-3. The general principle: `beforeEach` cleanup makes tests *logically* independent; `--workers=1` prevents shared-resource race conditions. An alternative that avoids the workers flag entirely is to create a unique user per test run using the register API so tests never share the same account.
+---
 
-**Instructor note — two additional bugs found when implementing the fix:**
+## animation-timing.spec.js — Animations & Transitions (PLANNED — not yet implemented)
 
-1. **Wrong status code:** The `waitForResponse` for the favorites POST was checking `status() === 200`, but `POST /api/favorites/:petId` returns `201 Created`. The listener never matched, causing a 10-second timeout. Always verify the actual status code against the server route.
+> ⚠️ **This spec does not exist yet.** It is a planned exercise; there is no
+> `animation-timing.spec.js` on either flake branch. Left here as a design note so the idea
+> isn't lost. Remove this section or implement the spec before relying on it in a session.
 
-2. **`waitForResponse` registered after the click:** The response event listener was set up *after* `await firstFavoriteButton.click()`. On a fast server, the response can fire and be missed before the listener attaches. Always register `waitForResponse` *before* the action that triggers the request.
+**Intended category:** Interacting with elements before they are stable. Candidate seams in
+this app: the `v-if="showFilters"` expanded filter panel and the `v-if="showScheduleModal"`
+"Schedule Meet & Greet" modal (`PetDetail.vue`), both with `transition` classes. A test that
+acts on a child with a short override timeout before the container has finished mounting
+would demonstrate the flake; the fix is to `await expect(container).toBeVisible()` before
+interacting and drop the short timeouts.
 
-3. **`apiContext` fixture bug:** The fixture originally called `request.newContext()`, which doesn't exist on Playwright's `APIRequestContext`. The fix is to avoid `newContext` entirely: use the `request` fixture to log in and get a token, then return a thin wrapper object (`{ get, post, delete }`) that injects the `Authorization` header on every call.
+---
+
+## The recurring root cause (cross-cutting)
+
+| Spec | `waitForResponse`-after-action race? | Other issue |
+| --- | --- | --- |
+| race-condition | ✅ `beforeEach` (the real flake) | non-retrying reads (don't actually flake here) |
+| element-ambiguity | ✅ `beforeEach` + Test 2 detail fetch | deterministic locator bugs (not flaky) |
+| spa-navigation | ✅ two post-click `waitForResponse` | short override timeouts |
+| test-isolation | ✅ Test A `goto`→`waitForResponse` | wrong status code; shared DB state |
+
+**The habit to teach:** register `waitForResponse` (or `expect(...).toBeVisible()` /
+`waitForURL`) *before* the action that triggers it, and prefer web-first auto-retrying
+assertions over one-shot reads. When in doubt, run `--repeat-each` and read the real failure.

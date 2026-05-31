@@ -13,13 +13,16 @@ test.describe('Multi-Step SPA Navigation Flow', () => {
     await page.waitForURL(/dashboard/);
 
     await page.getByTestId('nav-browse-pets').click();
-    await page.waitForResponse((resp) => resp.url().includes('/api/pets') && resp.status() === 200);
+    await page.waitForURL(/\/pets/);
+    await expect(page.getByTestId('pets-grid')).toBeVisible();
 
     await page.locator('[data-testid^="pet-card-"]').first().click();
     await page.waitForURL(/\/pets\/\d+/);
-    await page.waitForResponse((resp) => resp.url().includes('/api/pets/') && resp.status() === 200);
 
-    await page.getByTestId('start-application-button').click();
+    // Auto-wait for the detail page to render instead of racing its response.
+    const startButton = page.getByTestId('start-application-button');
+    await expect(startButton).toBeVisible();
+    await startButton.click();
     await page.waitForURL(/\/apply\//);
 
     await expect(page.getByText('Step 1 of 5')).toBeVisible();
