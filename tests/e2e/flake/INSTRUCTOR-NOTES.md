@@ -1,7 +1,17 @@
 # Flaky Test Exercises — Instructor Notes
 
 Each exercise lives in `exercise/flake` (broken) with a stable answer in `solutions/flake`.
-Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `test-isolation`) to observe the intermittent failures.
+Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `favorites`) to observe the intermittent failures.
+
+**Spec → flake category (decoder).** File names are intentionally *feature-based* so students
+can't read the answer off the filename — they diagnose from the failure, then you check here:
+
+| File | Flake category |
+| --- | --- |
+| `pet-filtering.spec.js` | Race condition — reads results before the refetch lands |
+| `pet-browsing.spec.js` | Element ambiguity — over-broad / wrong-element locators (deterministic) |
+| `adoption-flow.spec.js` | SPA navigation — short hardcoded timeouts |
+| `favorites.spec.js` | Test isolation — shared/dirty DB state |
 
 > **Read this first — two mechanisms drive the flakes here.**
 >
@@ -9,7 +19,7 @@ Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `test-isolatio
 >    (wired into `playwright.config.js`'s `webServer`; the hook itself lives in
 >    `server/routes/pets.js` and is dormant everywhere else). `GET /api/pets` then takes a random
 >    0–300 ms, so a test that reads or acts on filtered data **without waiting for the response**
->    genuinely races it. This is what makes `race-condition` flake for its *labeled* reason — the
+>    genuinely races it. This is what makes `pet-filtering` flake for its *labeled* reason — the
 >    local app is otherwise too fast to race. **The answers must stay green under this latency**,
 >    and they do, because they wait properly.
 > 2. **`waitForResponse` registered _after_ the action** (a `goto` or a `click`). The response can
@@ -17,12 +27,12 @@ Run with `--repeat-each=10` (or `--repeat-each=5 --workers=1` for `test-isolatio
 >    fails — only sometimes. This appears across the specs (see the table at the bottom).
 >
 > Teaching moment: **verify the cause by running `--repeat-each` and reading the actual failure —
-> the flake isn't always where the test's name points.** And note `element-ambiguity`'s two bugs
+> the flake isn't always where the test's name points.** And note `pet-browsing`'s two bugs
 > are *deterministic*, not flaky (see its section).
 
 ---
 
-## race-condition.spec.js — Racing the UI
+## pet-filtering.spec.js — Racing the UI
 
 **Labeled category:** Missing network wait + non-retrying assertions
 
@@ -45,7 +55,7 @@ shared with the other specs. The answer fixes both.
 
 ---
 
-## element-ambiguity.spec.js — Element Ambiguity
+## pet-browsing.spec.js — Element Ambiguity
 
 **Labeled category:** Overly broad locators matching multiple elements
 
@@ -58,7 +68,7 @@ they fail on *every* run, not intermittently:
   (first button in DOM), so it never navigates.
 
 The only *intermittent* element on this spec is the same racy `beforeEach`
-(`goto` → `waitForResponse`) as race-condition, plus a second response race in Test 2
+(`goto` → `waitForResponse`) as pet-filtering, plus a second response race in Test 2
 (`waitForResponse('/api/pets/')` registered after the card click). So this file teaches
 **two different bug classes at once**: deterministic locator mistakes *and* a setup flake.
 
@@ -71,7 +81,7 @@ The only *intermittent* element on this spec is the same racy `beforeEach`
 
 ---
 
-## spa-navigation.spec.js — SPA Navigation Assumptions
+## adoption-flow.spec.js — SPA Navigation Assumptions
 
 **Labeled category:** Not accounting for async client-side route changes
 
@@ -92,7 +102,7 @@ which race the response and time out (~55% failure before fixing).
 
 ---
 
-## test-isolation.spec.js — Shared/Dirty State
+## favorites.spec.js — Shared/Dirty State
 
 **Labeled category:** Tests sharing persistent state through a real database
 
@@ -100,7 +110,7 @@ which race the response and time out (~55% failure before fixing).
 a favorite; Test B expects `toHaveCount(0)` on the dashboard. With `fullyParallel: true`,
 order is non-deterministic, so Test B fails whenever Test A ran first — a true ordering flake.
 
-**Run with:** `npx playwright test test-isolation --workers=1 --repeat-each=5`
+**Run with:** `npx playwright test favorites --workers=1 --repeat-each=5`
 
 **The fix (answer key):**
 1. Add a `beforeEach` that uses the `apiContext` fixture to clear favorites: `GET /favorites`,
@@ -129,7 +139,7 @@ order is non-deterministic, so Test B fails whenever Test A ran first — a true
 > window to race, and Playwright's auto-waiting absorbs what little exists (measured ~0% flake
 > across several attempts). A genuine animation-timing flake would require first adding an actual
 > CSS transition to the app. The broader "timing flake" need is instead met by the
-> `SIMULATE_LATENCY` backend latency (see `race-condition`), which is reliable and
+> `SIMULATE_LATENCY` backend latency (see `pet-filtering`), which is reliable and
 > machine-independent. Network-mock and date/locale flakes were likewise found to collapse to
 > 0%/100% here — this app is simply too deterministic for them without app changes.
 
@@ -139,10 +149,10 @@ order is non-deterministic, so Test B fails whenever Test A ran first — a true
 
 | Spec | `waitForResponse`-after-action race? | Other issue |
 | --- | --- | --- |
-| race-condition | ✅ `beforeEach` | non-retrying reads (now flake for real under `SIMULATE_LATENCY`) |
-| element-ambiguity | ✅ `beforeEach` + Test 2 detail fetch | deterministic locator bugs (not flaky) |
-| spa-navigation | ✅ two post-click `waitForResponse` | short override timeouts |
-| test-isolation | ✅ Test A `goto`→`waitForResponse` | wrong status code; shared DB state |
+| pet-filtering | ✅ `beforeEach` | non-retrying reads (now flake for real under `SIMULATE_LATENCY`) |
+| pet-browsing | ✅ `beforeEach` + Test 2 detail fetch | deterministic locator bugs (not flaky) |
+| adoption-flow | ✅ two post-click `waitForResponse` | short override timeouts |
+| favorites | ✅ Test A `goto`→`waitForResponse` | wrong status code; shared DB state |
 
 **The habit to teach:** register `waitForResponse` (or `expect(...).toBeVisible()` /
 `waitForURL`) *before* the action that triggers it, and prefer web-first auto-retrying

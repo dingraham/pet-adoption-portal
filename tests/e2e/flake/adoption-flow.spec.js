@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-// Run with: npx playwright test spa-navigation --repeat-each=10
+// Run with: npx playwright test adoption-flow --repeat-each=10
 
-test.describe('Multi-Step SPA Navigation Flow', () => {
+test.describe('Adoption Application', () => {
   test('should login and navigate through to adoption application', async ({ page }) => {
     await page.goto('/login');
 
