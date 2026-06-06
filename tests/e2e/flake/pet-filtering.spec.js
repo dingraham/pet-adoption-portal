@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Run with: npx playwright test race-condition --repeat-each=10
+// Run with: npx playwright test pet-filtering --repeat-each=10
 
 test.describe('Pet Filtering Results', () => {
   test.beforeEach(async ({ page }) => {

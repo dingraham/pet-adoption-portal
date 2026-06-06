@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/auth.fixture.js';
 
-// Run with: npx playwright test test-isolation --repeat-each=5
+// Run with: npx playwright test favorites --workers=1 --repeat-each=5
 
 test.describe('Favorites Feature', () => {
   test('should add a pet to favorites', async ({ userPage }) => {

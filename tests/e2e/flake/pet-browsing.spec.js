@@ -1,8 +1,8 @@
 import { test, expect } from '../../fixtures/auth.fixture.js';
 
-// Run with: npx playwright test element-ambiguity --repeat-each=10
+// Run with: npx playwright test pet-browsing --repeat-each=10
 
-test.describe('Pet Browsing with Ambiguous Selectors', () => {
+test.describe('Pet Browsing', () => {
   test.beforeEach(async ({ userPage }) => {
     await userPage.goto('/pets');
     await userPage.waitForResponse(
