@@ -62,8 +62,10 @@ shared with the other specs. The answer fixes both.
 **Important framing:** As written, the two locator bugs are **deterministic, not flaky** —
 they fail on *every* run, not intermittently:
 
-- **Test 1:** `getByRole('heading', { level: 3 })` matches ~12 `<h3>` pet names; `.textContent()`
-  on a multi-match locator is a strict-mode violation every time.
+- **Test 1:** `locator('[data-testid^="pet-name-"]')` matches every pet-name cell (~12);
+  `.textContent()` on a multi-match locator is a strict-mode violation every time. Note the lesson:
+  even a `getByTestId`-style selector is ambiguous when the prefix isn't unique — you still need
+  `.first()` or to scope it to one card.
 - **Test 2:** `getByRole('button').first()` on the detail page is always the favorite heart
   (first button in DOM), so it never navigates.
 
@@ -74,8 +76,8 @@ The only *intermittent* element on this spec is the same racy `beforeEach`
 
 **The fix (answer key):**
 1. **`beforeEach`:** `await expect(userPage.getByTestId('pets-grid')).toBeVisible()` (removes the flake).
-2. **Test 1:** scope the heading to one card —
-   `userPage.locator('[data-testid^="pet-card-"]').first().getByRole('heading')`.
+2. **Test 1:** scope the name to one card —
+   `userPage.locator('[data-testid^="pet-card-"]').first().locator('[data-testid^="pet-name-"]')`.
 3. **Test 2:** use the explicit testid (`start-application-button`) and, instead of racing the
    detail response, auto-wait for it: `await expect(startButton).toBeVisible()` then click.
 
