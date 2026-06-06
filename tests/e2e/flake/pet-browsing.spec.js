@@ -5,23 +5,27 @@ import { test, expect } from '../../fixtures/auth.fixture.js';
 test.describe('Pet Browsing', () => {
   test.beforeEach(async ({ userPage }) => {
     await userPage.goto('/pets');
-    await userPage.waitForResponse(
-      (resp) => resp.url().includes('/api/pets') && resp.status() === 200
-    );
+    // Web-first wait: auto-retries until the list has rendered. Avoids the
+    // goto/waitForResponse race (the response can fire before the listener attaches).
+    await expect(userPage.getByTestId('pets-grid')).toBeVisible();
   });
 
   test('should read the name of the first pet', async ({ userPage }) => {
-    const petName = await userPage.locator('[data-testid^="pet-name-"]').textContent();
+    const petName = await userPage
+      .locator('[data-testid^="pet-card-"]')
+      .first()
+      .locator('[data-testid^="pet-name-"]')
+      .textContent();
     expect(petName).toBeTruthy();
   });
 
   test('should click the adoption button on the detail page', async ({ userPage }) => {
     await userPage.locator('[data-testid^="pet-card-"]').first().click();
-    await userPage.waitForResponse(
-      (resp) => resp.url().includes('/api/pets/') && resp.status() === 200
-    );
 
-    await userPage.getByRole('button').first().click();
+    // Auto-wait for the detail page to render instead of racing its response.
+    const startButton = userPage.getByTestId('start-application-button');
+    await expect(startButton).toBeVisible();
+    await startButton.click();
     await expect(userPage).toHaveURL(/\/apply\//);
   });
 });
