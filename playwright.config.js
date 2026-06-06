@@ -96,8 +96,7 @@ export default defineConfig({
       stdout: 'pipe',
       stderr: 'pipe',
       // Simulate a slow/variable backend so the timing flakes are genuinely
-      // intermittent (the local app is otherwise too fast to race). The answers
-      // here must stay green under this latency.
+      // intermittent (the local app is otherwise too fast to race).
       env: { SIMULATE_LATENCY: '300' },
     },
     {

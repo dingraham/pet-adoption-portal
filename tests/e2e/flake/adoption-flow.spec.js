@@ -10,22 +10,16 @@ test.describe('Adoption Application', () => {
     await page.getByTestId('login-password').fill('user123');
     await page.getByTestId('login-submit').click();
 
-    await page.waitForURL(/dashboard/);
+    await expect(page).toHaveURL(/dashboard/, { timeout: 500 });
 
-    await page.getByTestId('nav-browse-pets').click();
-    await page.waitForURL(/\/pets/);
-    await expect(page.getByTestId('pets-grid')).toBeVisible();
+    await page.goto('/pets');
+    await page.waitForResponse((resp) => resp.url().includes('/api/pets') && resp.status() === 200);
 
     await page.locator('[data-testid^="pet-card-"]').first().click();
-    await page.waitForURL(/\/pets\/\d+/);
 
-    // Auto-wait for the detail page to render instead of racing its response.
-    const startButton = page.getByTestId('start-application-button');
-    await expect(startButton).toBeVisible();
-    await startButton.click();
-    await page.waitForURL(/\/apply\//);
+    await page.getByTestId('start-application-button').click({ timeout: 300 });
 
-    await expect(page.getByText('Step 1 of 5')).toBeVisible();
-    await expect(page.locator('h2')).toContainText('Personal Information');
+    await expect(page.getByText('Step 1 of 5')).toBeVisible({ timeout: 300 });
+    await expect(page.locator('h2')).toContainText('Personal Information', { timeout: 1000 });
   });
 });
