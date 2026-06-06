@@ -14,7 +14,7 @@ test.describe('Pet Browsing', () => {
     const petName = await userPage
       .locator('[data-testid^="pet-card-"]')
       .first()
-      .getByRole('heading')
+      .locator('[data-testid^="pet-name-"]')
       .textContent();
     expect(petName).toBeTruthy();
   });
