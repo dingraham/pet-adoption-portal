@@ -12,6 +12,7 @@ can't read the answer off the filename — they diagnose from the failure, then 
 | `pet-browsing.spec.js` | Element ambiguity — over-broad / wrong-element locators (deterministic) |
 | `adoption-flow.spec.js` | SPA navigation — short hardcoded timeouts |
 | `favorites.spec.js` | Test isolation — shared/dirty DB state |
+| `appointments.spec.js` | Timezone / locale — asserting a locale-formatted date ("works on my machine") |
 
 > **Read this first — two mechanisms drive the flakes here.**
 >
@@ -130,6 +131,29 @@ order is non-deterministic, so Test B fails whenever Test A ran first — a true
    then waited for `/api/pets`, the same setup race as the other specs. Replaced with
    `await expect(userPage.getByTestId('pets-grid')).toBeVisible()`. (The favorites
    `waitForResponse` is correctly registered *before* the click and was kept.)
+
+---
+
+## appointments.spec.js — Timezone / locale (Environment)
+
+**Labeled category:** Asserting a locale/timezone-dependent value — "works on my machine"
+
+**What's broken:** The dashboard renders an appointment date with
+`new Date(apt.date).toLocaleDateString()` (`Dashboard.vue:252`). The date is stored as the plain
+string `'2024-01-15'`, which `new Date()` parses as **UTC midnight** — so `toLocaleDateString()`
+shows the *previous day* in any timezone behind UTC. The broken test asserts the hardcoded string
+`'1/15/2024'`, so it **passes on a UTC machine and fails on a laptop/CI box in another zone**. This
+one is *not* intermittent per-run — it's environment-dependent (the classic "works on my machine").
+
+**Demonstrate it:**
+- `TZ=UTC npx playwright test appointments` → passes
+- `TZ=Pacific/Honolulu npx playwright test appointments` → fails (renders `1/14/2024`)
+
+**The fix (answer key):** Don't assert a locale/timezone-formatted display string. Verify the
+**stored** date (the timezone-independent source of truth, via the API) and assert a stable,
+non-date UI field (the time). Green in every timezone. (Alternative: pin the suite's timezone with
+`use: { timezoneId: 'UTC' }` in the config so date rendering is deterministic — but never hardcode
+a localized date and hope.)
 
 ---
 
