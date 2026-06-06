@@ -11,9 +11,6 @@ test.describe('Pet Browsing', () => {
   });
 
   test('should read the name of the first pet', async ({ userPage }) => {
-    // Ambiguous: this testid prefix matches every pet-name on the page (~12), so
-    // .textContent() triggers a strict-mode violation. Even getByTestId selectors
-    // need .first()/scoping when the prefix isn't unique.
     const petName = await userPage.locator('[data-testid^="pet-name-"]').textContent();
     expect(petName).toBeTruthy();
   });
