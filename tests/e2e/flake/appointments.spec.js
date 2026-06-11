@@ -3,6 +3,10 @@ import { test, expect } from '../../fixtures/auth.fixture.js';
 // Run with: npx playwright test appointments
 
 test.describe('Appointments', () => {
+  // Pin the locale so the rendered date format is stable across machines
+  // (otherwise a Norwegian-locale laptop renders 15.01.2024 instead of 1/15/2024).
+  test.use({ locale: 'en-US' });
+
   test.beforeEach(async ({ apiContext }) => {
     // Ensure there is a scheduled appointment with a known date to display.
     await apiContext
