@@ -362,6 +362,70 @@ test('check element text', async ({ page }) => {
 });
 ```
 
+### Method 5: Trace Viewer — replay a failure (and diff flaky runs)
+
+A **trace** is a full recording of a run: DOM snapshots, every action, network, and console.
+Open the trace from a failed run and scrub the action timeline to see exactly where it diverged:
+
+```bash
+npx playwright show-trace test-results/<folder>/trace.zip
+```
+
+**For flaky tests, compare a passing run against a failing one.** This project's config uses
+`trace: 'retain-on-failure-and-retries'`, which keeps a trace for _every_ attempt. Run a flaky
+spec with retries so you capture both, then open the failing attempt next to the passing retry —
+the difference in timing/order is usually the flake:
+
+```bash
+npx playwright test tests/e2e/flake/race-condition.spec.js --retries=2 --repeat-each=5
+```
+
+### Playwright 1.60 — debugging niceties
+
+This project is on **Playwright 1.60**. Recent additions worth knowing:
+
+- `trace: 'retain-on-failure-and-retries'` — per-attempt traces for the flaky-run comparison above (configured here).
+- Trace Viewer / UI Mode: pretty-print toggle for JSON request/response bodies, and improved action filtering.
+
+> Playwright is also adding AI/agent-oriented debugging tooling. The exact commands move fast —
+> check the [official release notes](https://playwright.dev/docs/release-notes) for the current
+> names before relying on them, rather than trusting a tutorial (or an AI) from memory.
+
+---
+
+## 🧭 The Debugging Mindset (and where AI fits)
+
+Tools surface symptoms. **You** find causes. The point of this workshop is the thought process —
+not a tool (or an AI) that hands you an answer. Use this loop on every failure:
+
+1. **Read the actual failure.** The error and the line it points to are step one. "Timed out
+   waiting for X" is a different bug from "expected 'cat', got 'dog'." Don't skim it.
+2. **Form a hypothesis you can state in one sentence.** "The `/api/pets` response fired before
+   `waitForResponse` attached." A hypothesis you can test beats a fix you're guessing at.
+3. **Work backwards from the pipeline.** Failing assertion → which locator/value → which app
+   behavior → which line of code or piece of data. Let the trace (Method 5) walk you back.
+4. **Confirm the cause before fixing.** Reproduce it on demand. For flakes, run `--repeat-each`
+   and watch the rate — if you can't make it fail when you want, you don't understand it yet.
+5. **Fix the cause, not the symptom — then prove it.** Re-run enough times to show it's gone.
+
+### Where AI helps — and where it doesn't
+
+AI assistants (and Playwright's own agent tooling) are great accelerators **once you have a
+hypothesis**: explaining an unfamiliar error, suggesting a web-first assertion, drafting a
+locator. They are poor **substitutes for the hypothesis itself** — ask "fix my flaky test" and
+you'll often get a plausible change that hides the symptom (a longer timeout, a retry) without
+removing the cause. Worse, a green run then _feels_ like success.
+
+A rule for this workshop:
+
+> **Diagnose first, then delegate.** Be able to explain, in one sentence, _why_ a test fails and
+> _why_ your fix works — before you let an AI write the fix. If you can't explain it, you're not
+> done debugging, no matter how green the run looks.
+
+When you do use AI: hand it the trace/error **and your hypothesis**, ask it to _confirm or refute_
+that hypothesis, and check the fix against the cause you identified. Treat it as a sharp junior
+pair, not an oracle.
+
 ---
 
 ## 📊 Viewing Test Reports
