@@ -7,6 +7,13 @@ const router = express.Router();
 // Get all pets with filtering and pagination
 router.get('/', async (req, res) => {
   try {
+    // Simulated variable latency for the flakiness exercises. Off unless
+    // SIMULATE_LATENCY (max ms) is set, so it never affects normal runs.
+    if (process.env.SIMULATE_LATENCY) {
+      await new Promise((r) =>
+        setTimeout(r, Math.floor(Math.random() * Number(process.env.SIMULATE_LATENCY)))
+      );
+    }
     let pets = await readDB('pets.json');
     const {
       species,
