@@ -39,8 +39,12 @@ export default defineConfig({
     // Base URL for tests - all page.goto('/path') will use this
     baseURL: 'http://localhost:5173',
 
-    // Collect trace - only retain on failure to avoid clutter in CI artifacts
-    trace: 'retain-on-failure',
+    // Collect trace. 'retain-on-failure-and-retries' (Playwright 1.55+) keeps a trace for
+    // EVERY attempt - both the failing run and the passing retry of a flaky test - so you
+    // can open both in the trace viewer and diff them side by side. Ideal for the flake
+    // exercises; run with retries to produce the comparison, e.g. `--retries=1`
+    // (CI already retries). Falls back to retain-on-failure behaviour when there are no retries.
+    trace: 'retain-on-failure-and-retries',
 
     // Screenshot - only on failure to avoid clutter in CI artifacts
     screenshot: 'only-on-failure',
