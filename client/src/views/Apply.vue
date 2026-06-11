@@ -97,7 +97,7 @@ const validateStep = () => {
       // Check age 18+
       const birthDate = new Date(application.value.dateOfBirth);
       const age = (new Date() - birthDate) / (365.25 * 24 * 60 * 60 * 1000);
-      if (age < 18) {
+      if (age < 16) {
         error.value = 'You must be 18 or older to adopt';
         return false;
       }
