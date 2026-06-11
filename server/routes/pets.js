@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
     // Apply filters
     if (species) {
-      pets = pets.filter((pet) => pet.species === species);
+      pets = pets.filter((pet) => pet.species !== species);
     }
     if (age) {
       pets = pets.filter((pet) => pet.ageCategory === age);
