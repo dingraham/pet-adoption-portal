@@ -5,6 +5,9 @@ import { test, expect } from '../../fixtures/auth.fixture.js';
 //  TZ=UTC passes, TZ=Pacific/Honolulu fails on the broken version.)
 
 test.describe('Appointments', () => {
+  // Pin the locale so the rendered date format is stable across machines.
+  test.use({ locale: 'en-US' });
+
   test.beforeEach(async ({ apiContext }) => {
     // Ensure there is a scheduled appointment with a known date to display.
     await apiContext

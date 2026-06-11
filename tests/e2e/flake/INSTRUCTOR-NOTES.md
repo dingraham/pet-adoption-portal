@@ -141,13 +141,23 @@ order is non-deterministic, so Test B fails whenever Test A ran first — a true
 **What's broken:** The dashboard renders an appointment date with
 `new Date(apt.date).toLocaleDateString()` (`Dashboard.vue:252`). The date is stored as the plain
 string `'2024-01-15'`, which `new Date()` parses as **UTC midnight** — so `toLocaleDateString()`
-shows the *previous day* in any timezone behind UTC. The broken test asserts the hardcoded string
-`'1/15/2024'`, so it **passes on a UTC machine and fails on a laptop/CI box in another zone**. This
-one is *not* intermittent per-run — it's environment-dependent (the classic "works on my machine").
+shows the *previous day* only in timezones **behind UTC** (the Americas). The broken test asserts
+the hardcoded string `'1/15/2024'`. This one is *not* intermittent per-run — it's
+environment-dependent (the classic "works on my machine").
 
-**Demonstrate it:**
-- `TZ=UTC npx playwright test appointments` → passes
-- `TZ=Pacific/Honolulu npx playwright test appointments` → fails (renders `1/14/2024`)
+> ⚠️ **Direction matters — important if you present from Europe/Asia.** The off-by-one only
+> happens **west of UTC**. A plain run in a zone **at or ahead of UTC** (UTC, or e.g. Norway at
+> UTC+1/+2) **passes** — the flake won't show on its own. So **always drive the demo with the
+> explicit `TZ` overrides below**; don't rely on the laptop's own timezone. The `TZ=...` env
+> controls the browser timezone regardless of where you're physically located.
+>
+> The spec also pins `locale: 'en-US'` so the date renders as `1/15/2024` (slashes), not the local
+> format (a Norwegian-locale machine would otherwise render `15.1.2024` and the test would fail for
+> the *wrong* reason — locale, not timezone).
+
+**Demonstrate it (works from anywhere):**
+- `TZ=UTC npx playwright test appointments` → passes (`1/15/2024`)
+- `TZ=Pacific/Honolulu npx playwright test appointments` → fails (`1/14/2024`) — any west-of-UTC zone works
 
 **The fix (answer key):** Don't assert a locale/timezone-formatted display string. Verify the
 **stored** date (the timezone-independent source of truth, via the API) and assert a stable,
