@@ -226,20 +226,6 @@ process can pick up a different locale/timezone and reintroduce the mismatch.
 
 ---
 
-## animation-timing.spec.js — Animations & Transitions (investigated — not viable here)
-
-> ⚠️ **Not implemented, and not viable in this app as-is.** Investigated thoroughly: the
-> schedule modal and filter panel are plain `v-if` toggles with **no** Vue `<transition>` or CSS
-> mount animation, and the modal's slot data is pre-fetched — so there is no real "mid-animation"
-> window to race, and Playwright's auto-waiting absorbs what little exists (measured ~0% flake
-> across several attempts). A genuine animation-timing flake would require first adding an actual
-> CSS transition to the app. The broader "timing flake" need is instead met by the
-> `SIMULATE_LATENCY` backend latency (see `pet-filtering`), which is reliable and
-> machine-independent. Network-mock and date/locale flakes were likewise found to collapse to
-> 0%/100% here — this app is simply too deterministic for them without app changes.
-
----
-
 ## The recurring root cause (cross-cutting)
 
 | Spec          | `waitForResponse`-after-action race?  | Other issue                                                      |
