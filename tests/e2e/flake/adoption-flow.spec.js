@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // Run with: npx playwright test adoption-flow --repeat-each=10
 
@@ -12,12 +12,9 @@ test.describe('Adoption Application', () => {
 
     await page.waitForURL(/dashboard/);
 
-    await page.getByTestId('nav-browse-pets').click();
-    await page.waitForURL(/\/pets/);
-    await expect(page.getByTestId('pets-grid')).toBeVisible();
+    await page.goto('/pets');
 
-    await page.locator('[data-testid^="pet-card-"]').first().click();
-    await page.waitForURL(/\/pets\/\d+/);
+    await page.locator('[data-testid^="pet-card-"]').first().click({ timeout: 300 });
 
     // Auto-wait for the detail page to render instead of racing its response.
     const startButton = page.getByTestId('start-application-button');

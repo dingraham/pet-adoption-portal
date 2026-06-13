@@ -101,7 +101,7 @@ export default defineConfig({
       stderr: 'pipe',
       // Simulate a slow/variable backend so the timing flakes are genuinely
       // intermittent (the local app is otherwise too fast to race).
-      env: { SIMULATE_LATENCY: '300' },
+      env: { SIMULATE_LATENCY: '450' },
     },
     {
       command: 'cd client && npm run dev',
