@@ -1,12 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // Run with: npx playwright test pet-filtering --repeat-each=10
 
 test.describe('Pet Filtering Results', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/pets');
-    // Web-first wait: auto-retries until the list has rendered. Avoids the
-    // goto/waitForResponse race (the response can fire before the listener attaches).
+    // Web-first wait: auto-retries until the list has rendered.
     await expect(page.getByTestId('pets-grid')).toBeVisible();
   });
 

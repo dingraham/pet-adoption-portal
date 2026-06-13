@@ -10,13 +10,19 @@ test.describe('Adoption Application', () => {
     await page.getByTestId('login-password').fill('user123');
     await page.getByTestId('login-submit').click();
 
+    // Wait for the SPA route to settle rather than racing a short hardcoded timeout.
     await page.waitForURL(/dashboard/);
 
-    await page.goto('/pets');
+    // Navigate through the app and wait for the list to actually render .
+    await page.getByTestId('nav-browse-pets').click();
+    await page.waitForURL(/\/pets/);
+    await expect(page.getByTestId('pets-grid')).toBeVisible();
 
-    await page.locator('[data-testid^="pet-card-"]').first().click({ timeout: 300 });
+    // Auto-wait for the card, then for the detail route to settle.
+    await page.locator('[data-testid^="pet-card-"]').first().click();
+    await page.waitForURL(/\/pets\/\d+/);
 
-    // Auto-wait for the detail page to render instead of racing its response.
+    // Auto-wait for the detail page to render before clicking through.
     const startButton = page.getByTestId('start-application-button');
     await expect(startButton).toBeVisible();
     await startButton.click();

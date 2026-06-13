@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/auth.fixture.js';
+import { expect, test } from '../../fixtures/auth.fixture.js';
 
 // Run with: npx playwright test favorites --workers=1 --repeat-each=5
 
