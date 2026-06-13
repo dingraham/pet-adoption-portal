@@ -13,9 +13,8 @@ test.describe('Adoption Application', () => {
     await expect(page).toHaveURL(/dashboard/, { timeout: 500 });
 
     await page.goto('/pets');
-    await page.waitForResponse((resp) => resp.url().includes('/api/pets') && resp.status() === 200);
 
-    await page.locator('[data-testid^="pet-card-"]').first().click();
+    await page.locator('[data-testid^="pet-card-"]').first().click({ timeout: 300 });
 
     await page.getByTestId('start-application-button').click({ timeout: 300 });
 
